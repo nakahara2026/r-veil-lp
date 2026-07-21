@@ -1,8 +1,9 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <header class="site-header">
-	<a href="/" class="site-header__logo">R VEIL</a>
+	<a href={`${base}/`} class="site-header__logo">R VEIL</a>
 </header>
 
 <style>

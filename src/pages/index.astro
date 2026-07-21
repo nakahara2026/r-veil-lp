@@ -6,6 +6,7 @@ import Placeholder from '../components/Placeholder.astro';
 const bagPhotos = Array.from({ length: 10 });
 const coatPhotos = Array.from({ length: 9 });
 const pad2 = (n) => String(n).padStart(2, '0');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout>
@@ -36,7 +37,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 		<section class="intro">
 			<img
 				class="intro__media"
-				src="/images/unison-main.png"
+				src={`${base}/images/unison-main.png`}
 				alt="雨上がりの街路で、しつけられた犬（コート着用）と男性が向き合う構図"
 			/>
 			<div class="intro__copy" data-reveal>
@@ -47,7 +48,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 
 		<!-- Section 04: ビジュアルインターリュード -->
 		<section class="interlude">
-			<img class="interlude__media" src="/images/dog-forest-rain.png" alt="森の中を歩く犬（コート着用）。水たまりに反射" />
+			<img class="interlude__media" src={`${base}/images/dog-forest-rain.png`} alt="森の中を歩く犬（コート着用）。水たまりに反射" />
 			<p class="interlude__copy" data-reveal>
 				美しいシルエットと、異素材のコントラストが魅せる撥水加工コート。<br />闇夜に浮かぶ、一筋の光線。
 			</p>
@@ -63,7 +64,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 						{
 							coatPhotos.map((_, i) => (
 								<div class="carousel__slide carousel__slide--square">
-									<img src={`/images/coat-${pad2(i + 1)}.png`} alt={`コート商品写真 ${i + 1}/9`} loading="lazy" />
+									<img src={`${base}/images/coat-${pad2(i + 1)}.png`} alt={`コート商品写真 ${i + 1}/9`} loading="lazy" />
 								</div>
 							))
 						}
@@ -79,7 +80,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 						{
 							coatPhotos.map((_, i) => (
 								<button class="thumb-grid__item" data-index={i} aria-label={`${i + 1}枚目に切り替え`} type="button">
-									<img src={`/images/coat-${pad2(i + 1)}.png`} alt="" loading="lazy" />
+									<img src={`${base}/images/coat-${pad2(i + 1)}.png`} alt="" loading="lazy" />
 								</button>
 							))
 						}
@@ -112,7 +113,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 		<section class="cutting">
 			<SectionHeading title="立体裁断" level="h2" />
 			<div class="cutting__media">
-				<img src="/images/saidan.png" alt="ガラス越しに立つ犬（都市的背景）" />
+				<img src={`${base}/images/saidan.png`} alt="ガラス越しに立つ犬（都市的背景）" />
 				<p class="cutting__copy" data-reveal>
 					犬の骨格と筋肉の動きを徹底的にサンプリングし、無駄のないタイト＆スマートなシルエットを実現しました。首周りから胸元、お腹にかけてのフィット感を高め、風や雨の侵入を軽減しながら、全力で走ってもズレにくいホッティング（カッティング）を追求。走る姿さえも美しい、アクティブかつエレガントな一着です。
 				</p>
@@ -124,7 +125,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 			<SectionHeading title="撥水加工素材" level="h2" />
 			<div class="split__grid">
 				<div class="split__media" data-reveal>
-					<img src="/images/hassui.png" alt="水滴のクローズアップ写真" />
+					<img src={`${base}/images/hassui.png`} alt="水滴のクローズアップ写真" />
 				</div>
 				<p class="split__copy" data-reveal>
 					軽やかに纏う、撥水加工ウェア。上品さと撥水性を両立した上質なテキスタイルを採用。普段着としてデイリーに着回せるしなやかさでありながら、急な雨に見舞われても水分を玉のように弾きます。晴れの日から雨の日へ、シームレスに日常を繋ぐ一枚です。
@@ -137,7 +138,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 			<SectionHeading title="夜行反射機能" level="h2" />
 			<div class="split__grid">
 				<div class="split__media" data-reveal>
-					<img src="/images/night.png" alt="反射ラインが光る犬の写真（暗所・車のライト演出）" />
+					<img src={`${base}/images/night.png`} alt="反射ラインが光る犬の写真（暗所・車のライト演出）" />
 				</div>
 				<p class="split__copy" data-reveal>
 					モダンな夜行反射ラインコートの美しいアウトライン（縁取り）に沿って、全方位にリフレクターラインを配置。暗い雨の日や夜間のお散歩でも、車のライトなどを浴びて美しく反射し、愛犬の視認性をスタイリッシュに高めます。
@@ -150,15 +151,15 @@ const pad2 = (n) => String(n).padStart(2, '0');
 			<SectionHeading title="他のこだわり" level="h2" />
 			<div class="material-detail__icons" data-reveal>
 				<div class="material-detail__icon">
-					<img src="/images/particular-01.png" alt="立体ロゴ（型押し）" />
+					<img src={`${base}/images/particular-01.png`} alt="立体ロゴ（型押し）" />
 					<p class="material-detail__icon-caption">質感がある立体ロゴ</p>
 				</div>
 				<div class="material-detail__icon">
-					<img src="/images/particular-02.png" alt="オリジナルキーホルダー" />
+					<img src={`${base}/images/particular-02.png`} alt="オリジナルキーホルダー" />
 					<p class="material-detail__icon-caption">オリジナル キーホルダー</p>
 				</div>
 				<div class="material-detail__icon">
-					<img src="/images/particular-03.png" alt="ファスナーテープ" />
+					<img src={`${base}/images/particular-03.png`} alt="ファスナーテープ" />
 					<p class="material-detail__icon-caption">ファスナーテープ</p>
 				</div>
 			</div>
@@ -167,7 +168,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 		<!-- Section 10: 職人の手元（裁断作業）バナー + 日本製・限定生産コピー -->
 		<section class="craft">
 			<div class="craft__media">
-				<img src="/images/banner.png" alt="職人の手元（裁断作業）" />
+				<img src={`${base}/images/banner.png`} alt="職人の手元（裁断作業）" />
 			</div>
 			<div class="craft__copy" data-reveal>
 				<p class="craft__label">日本製 &nbsp;/&nbsp; 限定生産</p>
@@ -183,8 +184,8 @@ const pad2 = (n) => String(n).padStart(2, '0');
 		<section class="section size-guide">
 			<p class="size-guide__title">Size Guide</p>
 			<div class="split__grid split__grid--images">
-				<div data-reveal><img src="/images/size-guide-01.png" alt="サイズ計測部位の図解（Back Length / Neck Girth / Chest Girth）" /></div>
-				<div data-reveal><img src="/images/size-guide-02.png" alt="サイズ表（M/L/XL/XXL/3XL）" /></div>
+				<div data-reveal><img src={`${base}/images/size-guide-01.png`} alt="サイズ計測部位の図解（Back Length / Neck Girth / Chest Girth）" /></div>
+				<div data-reveal><img src={`${base}/images/size-guide-02.png`} alt="サイズ表（M/L/XL/XXL/3XL）" /></div>
 			</div>
 			<p class="note">
 				※胸が深く細身の犬種（サイトハウンド等）は、胸周りのサイズを基準にお選びいただくことをおすすめします。<br />
@@ -195,8 +196,8 @@ const pad2 = (n) => String(n).padStart(2, '0');
 		<!-- Section 09: メンズウェア（フーディー）紹介 -->
 		<section class="menswear">
 			<div class="menswear__grid">
-				<img src="/images/bag-bg01.png" alt="フーディー着用モデル（都市）" />
-				<img src="/images/bag-bg02.png" alt="フーディー着用モデル（森）" />
+				<img src={`${base}/images/bag-bg01.png`} alt="フーディー着用モデル（都市）" />
+				<img src={`${base}/images/bag-bg02.png`} alt="フーディー着用モデル（森）" />
 				<div class="menswear__copy" data-reveal>
 					両手を自由にする、革新のカラビナフック。<br />DOGウェアと美しく同調する、撥水加工リバーシブル・ハンズフリーバッグ。
 				</div>
@@ -213,7 +214,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 						{
 							bagPhotos.map((_, i) => (
 								<div class="carousel__slide carousel__slide--square">
-									<img src={`/images/bag-${pad2(i + 1)}.png`} alt={`バッグ商品写真 ${i + 1}/10`} loading="lazy" />
+									<img src={`${base}/images/bag-${pad2(i + 1)}.png`} alt={`バッグ商品写真 ${i + 1}/10`} loading="lazy" />
 								</div>
 							))
 						}
@@ -229,7 +230,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 						{
 							bagPhotos.map((_, i) => (
 								<button class="thumb-grid__item" data-index={i} aria-label={`${i + 1}枚目に切り替え`} type="button">
-									<img src={`/images/bag-${pad2(i + 1)}.png`} alt="" loading="lazy" />
+									<img src={`${base}/images/bag-${pad2(i + 1)}.png`} alt="" loading="lazy" />
 								</button>
 							))
 						}
@@ -269,7 +270,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 		<!-- Section 11: 着用シーン（森） -->
 		<section class="cutting">
 			<div class="cutting__media">
-				<img src="/images/bag-bg03.png" alt="森の中に立つ男性モデル全身写真" />
+				<img src={`${base}/images/bag-bg03.png`} alt="森の中に立つ男性モデル全身写真" />
 				<p class="cutting__copy" data-reveal>
 					最大の特徴は、ショルダーストラップ（帯）に潜ませたバックルシステム。愛犬のリードをバッグに直接ジョイントすることで、お散歩中の「両手が自由になる」快適さを実現しました。
 				</p>
@@ -281,8 +282,8 @@ const pad2 = (n) => String(n).padStart(2, '0');
 			<SectionHeading title="撥水加工素材" level="h2" />
 			<div class="split__grid split__grid--stacked-media">
 				<div class="split__media split__media--stacked" data-reveal>
-					<img src="/images/hassui-01.png" alt="撥水加工キルティング生地のクローズアップ" />
-					<img src="/images/hassui-02.png" alt="撥水加工生地の質感クローズアップ" />
+					<img src={`${base}/images/hassui-01.png`} alt="撥水加工キルティング生地のクローズアップ" />
+					<img src={`${base}/images/hassui-02.png`} alt="撥水加工生地の質感クローズアップ" />
 				</div>
 				<p class="split__copy" data-reveal>
 					愛犬のウェアと同じ撥水加工テキスタイルを採用。晴れの日も雨の日も、静かに寄り添う相棒に。上質な佇まいが、日常のスタイルにさりげなく溶け込みます。
@@ -294,7 +295,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 		<section class="cutting">
 			<SectionHeading title="ショルダーストラップ仕様" level="h2" />
 			<div class="cutting__media">
-				<img src="/images/strap-bg.png" alt="バッグのカラビナフックとショルダーストラップのクローズアップ" />
+				<img src={`${base}/images/strap-bg.png`} alt="バッグのカラビナフックとショルダーストラップのクローズアップ" />
 				<p class="cutting__copy" data-reveal>
 					両手を自由にする、カラビナフック。<br />DOGウェアと美しく同調する、撥水加工リバーシブル・ハンズフリーバッグ。
 				</p>
@@ -306,13 +307,13 @@ const pad2 = (n) => String(n).padStart(2, '0');
 			<SectionHeading title="両面の表情を持つ" />
 			<div class="reversible__layout">
 				<div class="reversible__media reversible__media--1" data-reveal>
-					<img src="/images/bag-bg04.png" alt="黒面のバッグ" />
+					<img src={`${base}/images/bag-bg04.png`} alt="黒面のバッグ" />
 				</div>
 				<p class="reversible__text reversible__text--1" data-reveal>
 					気分やスタイルに合わせて、ガラリと印象を変えられるリバーシブル仕様。シックな表情と、軽快なキルティング。
 				</p>
 				<div class="reversible__media reversible__media--2" data-reveal>
-					<img src="/images/bag-bg05.png" alt="グレーキルティング面のバッグ" />
+					<img src={`${base}/images/bag-bg05.png`} alt="グレーキルティング面のバッグ" />
 				</div>
 				<p class="reversible__text reversible__text--2" data-reveal>
 						どちらの面にも、夜間の視認性を高めるリフレクターロゴを配置しました。都市のディテールに溶け込む、デザインと機能性をこの一つに。
@@ -358,7 +359,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 			<!-- Section 16: concept -->
 			<section class="section concept">
 				<div class="concept__media" data-reveal>
-					<img src="/images/concept.png" alt="コート・バッグの製品ディテールを並べたフラットレイ写真" />
+					<img src={`${base}/images/concept.png`} alt="コート・バッグの製品ディテールを並べたフラットレイ写真" />
 					<p class="concept__label">concept</p>
 				</div>
 				<div class="concept__copy" data-reveal>
@@ -371,14 +372,14 @@ const pad2 = (n) => String(n).padStart(2, '0');
 					<p>過剰な装飾を削ぎ落としたミニマルなデザイン、雨を弾く撥水機能、そして犬の骨格を美しく魅せるカッティング。</p>
 					<p>愛犬を子どもっぽく着飾るのではなく、一匹の「自立した美しいパートナー」として引き立てます。</p>
 					<p>私たちが目指したのは、いかにも「レインコート」らしい無骨なデザインではなく、街に溶け込む上質なデイリーウェア。<br />日本の職人技が生み出す、機能性と美しさをお届けします。</p>
-					<img class="concept__logo" src="/images/logo-small.png" alt="R VEIL ロゴマーク" />
+					<img class="concept__logo" src={`${base}/images/logo-small.png`} alt="R VEIL ロゴマーク" />
 				</div>
 			</section>
 
 			<!-- Section 17: memories -->
 			<section class="section memories">
 				<div class="memories__media" data-reveal>
-					<img src="/images/memories.png" alt="愛犬のコートを手描きしたスケッチ" />
+					<img src={`${base}/images/memories.png`} alt="愛犬のコートを手描きしたスケッチ" />
 					<p class="memories__label">memories</p>
 				</div>
 				<div class="memories__copy" data-reveal>
@@ -391,22 +392,22 @@ const pad2 = (n) => String(n).padStart(2, '0');
 						自由なペン先から生まれたアイデアを、<br />
 						ぜひ楽しんでみてください！
 					</p>
-					<img class="memories__sign" src="/images/sign.png" alt="Steven のサイン、2026 summer" />
+					<img class="memories__sign" src={`${base}/images/sign.png`} alt="Steven のサイン、2026 summer" />
 				</div>
 			</section>
 
 			<!-- Section 18: Follow us -->
 			<section class="sns">
 				<div class="sns__media">
-					<img src="/images/sns-bg.png" alt="森の中に立つ男性モデルと愛犬" />
+					<img src={`${base}/images/sns-bg.png`} alt="森の中に立つ男性モデルと愛犬" />
 					<div class="sns__copy" data-reveal>
 						<p class="sns__label">Follow us</p>
 						<ul class="sns__icons">
-							<li><a href="#" aria-label="Facebook"><img src="/images/icon-01.png" alt="" /></a></li>
-							<li><a href="#" aria-label="X"><img src="/images/icon-02.png" alt="" /></a></li>
-							<li><a href="#" aria-label="Instagram"><img src="/images/icon-03.png" alt="" /></a></li>
-							<li><a href="#" aria-label="LinkedIn"><img src="/images/icon-04.png" alt="" /></a></li>
-							<li><a href="#" aria-label="YouTube"><img src="/images/icon-05.png" alt="" /></a></li>
+							<li><a href="#" aria-label="Facebook"><img src={`${base}/images/icon-01.png`} alt="" /></a></li>
+							<li><a href="#" aria-label="X"><img src={`${base}/images/icon-02.png`} alt="" /></a></li>
+							<li><a href="#" aria-label="Instagram"><img src={`${base}/images/icon-03.png`} alt="" /></a></li>
+							<li><a href="#" aria-label="LinkedIn"><img src={`${base}/images/icon-04.png`} alt="" /></a></li>
+							<li><a href="#" aria-label="YouTube"><img src={`${base}/images/icon-05.png`} alt="" /></a></li>
 						</ul>
 					</div>
 				</div>
@@ -417,28 +418,28 @@ const pad2 = (n) => String(n).padStart(2, '0');
 				<p class="news__title">news</p>
 				<div class="news__list">
 					<a class="news__item" href="#" data-reveal>
-						<div class="news__thumb"><img src="/images/news-04.png" alt="サングラスとポーチのプロダクトショット" /></div>
+						<div class="news__thumb"><img src={`${base}/images/news-04.png`} alt="サングラスとポーチのプロダクトショット" /></div>
 						<div class="news__body">
 							<p class="news__text">ご予約のお客様先着20名に断熱素材、撥水加工小物入れをプレゼント。</p>
 							<p class="news__link">詳細はこちら&gt;&gt;</p>
 						</div>
 					</a>
 					<a class="news__item" href="#" data-reveal>
-						<div class="news__thumb"><img src="/images/news-03.png" alt="森の中でバッグを持つモデル" /></div>
+						<div class="news__thumb"><img src={`${base}/images/news-03.png`} alt="森の中でバッグを持つモデル" /></div>
 						<div class="news__body">
 							<p class="news__text">ご予約のお客様先着20名に断熱素材、撥水加工小物入れをプレゼント。</p>
 							<p class="news__status">comming soon</p>
 						</div>
 					</a>
 					<a class="news__item" href="#" data-reveal>
-						<div class="news__thumb"><img src="/images/news-02.png" alt="都市で犬と佇む男性モデル" /></div>
+						<div class="news__thumb"><img src={`${base}/images/news-02.png`} alt="都市で犬と佇む男性モデル" /></div>
 						<div class="news__body">
 							<p class="news__text">ご予約のお客様先着20名に断熱素材、撥水加工小物入れをプレゼント。</p>
 							<p class="news__status">comming soon</p>
 						</div>
 					</a>
 					<a class="news__item" href="#" data-reveal>
-						<div class="news__thumb"><img src="/images/news-01.png" alt="犬の顔を左右対称に描いたアートワーク" /></div>
+						<div class="news__thumb"><img src={`${base}/images/news-01.png`} alt="犬の顔を左右対称に描いたアートワーク" /></div>
 						<div class="news__body">
 							<p class="news__text">Arts 犬展 past and the past</p>
 							<p class="news__status">comming soon</p>
