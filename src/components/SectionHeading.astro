@@ -1,0 +1,46 @@
+---
+const { title, subtitle, level } = Astro.props;
+const isH2 = level === 'h2' || Boolean(subtitle);
+---
+
+<div class="section-heading" data-reveal>
+	<p class="section-heading__title" class:list={{ 'section-heading__title--h2': isH2 }}>{title}</p>
+	{subtitle && <p class="section-heading__subtitle">{subtitle}</p>}
+	<span class="section-heading__rule"></span>
+</div>
+
+<style>
+	.section-heading {
+		margin-bottom: 24px;
+	}
+
+	/* サブタイトル無し = H3相当（撥水加工素材など小見出し） */
+	.section-heading__title {
+		margin: 0;
+		color: var(--color-heading);
+		font-size: 20px;
+		font-weight: 400;
+		letter-spacing: 0.06em;
+	}
+
+	/* サブタイトルあり = H2相当（正体寸法／エッセンシャル リバーシブルバッグなど商品見出し） */
+	.section-heading__title--h2 {
+		font-size: 28px;
+	}
+
+	.section-heading__subtitle {
+		margin: 4px 0 0;
+		color: var(--color-caption);
+		font-size: 11px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.section-heading__rule {
+		display: block;
+		width: 100%;
+		height: 1px;
+		margin-top: 12px;
+		background: var(--color-divider);
+	}
+</style>

@@ -1,0 +1,1737 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Placeholder from '../components/Placeholder.astro';
+
+const bagPhotos = Array.from({ length: 10 });
+const coatPhotos = Array.from({ length: 9 });
+const pad2 = (n) => String(n).padStart(2, '0');
+---
+
+<BaseLayout>
+	<main>
+		<!-- Section 01: ヒーロー（動画） -->
+		<section class="hero">
+			<div class="hero__media">
+				<span class="hero__media-label">ヒーロー動画: 森・霧の航空/地上ショット（mp4, ループ, 尺約2:10）</span>
+			</div>
+			<div class="hero__controls">
+				<button class="hero__play" id="hero-play" type="button" aria-label="再生 / 一時停止">▶</button>
+				<div class="hero__seek"><span class="hero__seek-fill"></span></div>
+				<span class="hero__time">00:01 / 02:10</span>
+				<button class="hero__icon" type="button" aria-label="音量">♪</button>
+				<button class="hero__icon" type="button" aria-label="フルスクリーン">⤢</button>
+			</div>
+		</section>
+
+		<!-- Section 02: ニュースバー -->
+		<section class="news-bar">
+			<p class="news-bar__text">
+				<span class="news-bar__label">NEWS</span>
+				7月15日から予約開始！先着購入特典も。<a href="#bag" class="news-bar__link">詳細はこちら &gt;&gt;</a>
+			</p>
+		</section>
+
+		<!-- Section 03: UNISON イントロ -->
+		<section class="intro">
+			<img
+				class="intro__media"
+				src="/images/unison-main.png"
+				alt="雨上がりの街路で、しつけられた犬（コート着用）と男性が向き合う構図"
+			/>
+			<div class="intro__copy" data-reveal>
+				<h1 class="intro__title">UNISON</h1>
+				<p class="intro__subcopy">同じ素材、同じ機能、同じ表情。<br />境界線を越える、タクティカル・ドッグウェア。</p>
+			</div>
+		</section>
+
+		<!-- Section 04: ビジュアルインターリュード -->
+		<section class="interlude">
+			<img class="interlude__media" src="/images/dog-forest-rain.png" alt="森の中を歩く犬（コート着用）。水たまりに反射" />
+			<p class="interlude__copy" data-reveal>
+				美しいシルエットと、異素材のコントラストが魅せる撥水加工コート。<br />闇夜に浮かぶ、一筋の光線。
+			</p>
+		</section>
+
+		<!-- Section 05: 全天候型対応サイトハウンドアウター / プロダクト詳細（コート） -->
+		<section class="section coat-product" id="coat">
+			<SectionHeading title="全天候型対応サイトハウンドアウター" subtitle="All-Weather Sighthound Dog Shell" />
+
+			<div class="product-detail__body">
+				<div class="product-gallery" id="coat-gallery" data-reveal>
+					<div class="carousel" id="coat-carousel">
+						{
+							coatPhotos.map((_, i) => (
+								<div class="carousel__slide carousel__slide--square">
+									<img src={`/images/coat-${pad2(i + 1)}.png`} alt={`コート商品写真 ${i + 1}/9`} loading="lazy" />
+								</div>
+							))
+						}
+					</div>
+					<div class="carousel__dots" id="coat-dots">
+						{
+							coatPhotos.map((_, i) => (
+								<button class="carousel__dot" data-index={i} aria-label={`${i + 1}枚目を表示`} type="button" />
+							))
+						}
+					</div>
+					<div class="thumb-grid thumb-grid--cols-3" id="coat-thumbs">
+						{
+							coatPhotos.map((_, i) => (
+								<button class="thumb-grid__item" data-index={i} aria-label={`${i + 1}枚目に切り替え`} type="button">
+									<img src={`/images/coat-${pad2(i + 1)}.png`} alt="" loading="lazy" />
+								</button>
+							))
+						}
+					</div>
+				</div>
+
+				<div class="coat-product__info" data-reveal>
+					<p class="section__copy">
+						定番の撥水加工素材コート。グレイハウンドの美しい曲線に沿った専用設計。高い襟元とシームシーリングが、雨水の侵入を抑え、快適なドライ環境をサポートします。丈夫な透湿防水レイヤー。R
+						VEIL シグネチャー 立体ロゴ。
+					</p>
+					<dl class="spec-list">
+						<div class="spec-list__row">
+							<dt>fabric</dt>
+							<dd>100% nylon</dd>
+						</div>
+						<div class="spec-list__row">
+							<dt>color</dt>
+							<dd>dark gray</dd>
+						</div>
+					</dl>
+					<span class="swatch-bar swatch-bar--coat" aria-hidden="true"></span>
+					<p class="price">28,800yen<span class="price__unit">（税込）</span></p>
+					<button class="btn-circle purchase-btn" type="button">Purchase<br />予約 &gt;&gt;</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- Section 06: 立体裁断 -->
+		<section class="cutting">
+			<SectionHeading title="立体裁断" level="h2" />
+			<div class="cutting__media">
+				<img src="/images/saidan.png" alt="ガラス越しに立つ犬（都市的背景）" />
+				<p class="cutting__copy" data-reveal>
+					犬の骨格と筋肉の動きを徹底的にサンプリングし、無駄のないタイト＆スマートなシルエットを実現しました。首周りから胸元、お腹にかけてのフィット感を高め、風や雨の侵入を軽減しながら、全力で走ってもズレにくいホッティング（カッティング）を追求。走る姿さえも美しい、アクティブかつエレガントな一着です。
+				</p>
+			</div>
+		</section>
+
+		<!-- Section 07: 撥水加工素材 -->
+		<section class="section split">
+			<SectionHeading title="撥水加工素材" level="h2" />
+			<div class="split__grid">
+				<div class="split__media" data-reveal>
+					<img src="/images/hassui.png" alt="水滴のクローズアップ写真" />
+				</div>
+				<p class="split__copy" data-reveal>
+					軽やかに纏う、撥水加工ウェア。上品さと撥水性を両立した上質なテキスタイルを採用。普段着としてデイリーに着回せるしなやかさでありながら、急な雨に見舞われても水分を玉のように弾きます。晴れの日から雨の日へ、シームレスに日常を繋ぐ一枚です。
+				</p>
+			</div>
+		</section>
+
+		<!-- Section 08: 夜行反射機能（テキスト左・写真右） -->
+		<section class="section split split--reverse">
+			<SectionHeading title="夜行反射機能" level="h2" />
+			<div class="split__grid">
+				<div class="split__media" data-reveal>
+					<img src="/images/night.png" alt="反射ラインが光る犬の写真（暗所・車のライト演出）" />
+				</div>
+				<p class="split__copy" data-reveal>
+					モダンな夜行反射ラインコートの美しいアウトライン（縁取り）に沿って、全方位にリフレクターラインを配置。暗い雨の日や夜間のお散歩でも、車のライトなどを浴びて美しく反射し、愛犬の視認性をスタイリッシュに高めます。
+				</p>
+			</div>
+		</section>
+
+		<!-- Section 09: 他のこだわり -->
+		<section class="section material-detail">
+			<SectionHeading title="他のこだわり" level="h2" />
+			<div class="material-detail__icons" data-reveal>
+				<div class="material-detail__icon">
+					<img src="/images/particular-01.png" alt="立体ロゴ（型押し）" />
+					<p class="material-detail__icon-caption">質感がある立体ロゴ</p>
+				</div>
+				<div class="material-detail__icon">
+					<img src="/images/particular-02.png" alt="オリジナルキーホルダー" />
+					<p class="material-detail__icon-caption">オリジナル キーホルダー</p>
+				</div>
+				<div class="material-detail__icon">
+					<img src="/images/particular-03.png" alt="ファスナーテープ" />
+					<p class="material-detail__icon-caption">ファスナーテープ</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Section 10: 職人の手元（裁断作業）バナー + 日本製・限定生産コピー -->
+		<section class="craft">
+			<div class="craft__media">
+				<img src="/images/banner.png" alt="職人の手元（裁断作業）" />
+			</div>
+			<div class="craft__copy" data-reveal>
+				<p class="craft__label">日本製 &nbsp;/&nbsp; 限定生産</p>
+				<p class="craft__text">
+					『R VEIL』は、限られた数だけを丁寧に仕立てるシリアル生産にこだわります。<br />
+					愛犬との日々をより深く、よりスタイリッシュに彩る、<br />
+					特別なマスターピースをその手に。
+				</p>
+			</div>
+		</section>
+
+		<!-- Section 11: Size Guide -->
+		<section class="section size-guide">
+			<p class="size-guide__title">Size Guide</p>
+			<div class="split__grid split__grid--images">
+				<div data-reveal><img src="/images/size-guide-01.png" alt="サイズ計測部位の図解（Back Length / Neck Girth / Chest Girth）" /></div>
+				<div data-reveal><img src="/images/size-guide-02.png" alt="サイズ表（M/L/XL/XXL/3XL）" /></div>
+			</div>
+			<p class="note">
+				※胸が深く細身の犬種（サイトハウンド等）は、胸周りのサイズを基準にお選びいただくことをおすすめします。<br />
+				※他のサイズをお求めの方はお問い合わせください。
+			</p>
+		</section>
+
+		<!-- Section 09: メンズウェア（フーディー）紹介 -->
+		<section class="menswear">
+			<div class="menswear__grid">
+				<img src="/images/bag-bg01.png" alt="フーディー着用モデル（都市）" />
+				<img src="/images/bag-bg02.png" alt="フーディー着用モデル（森）" />
+				<div class="menswear__copy" data-reveal>
+					両手を自由にする、革新のカラビナフック。<br />DOGウェアと美しく同調する、撥水加工リバーシブル・ハンズフリーバッグ。
+				</div>
+			</div>
+		</section>
+
+		<!-- Section 10: プロダクト詳細（エッセンシャル リバーシブルバッグ） -->
+		<section class="section bag-product" id="bag">
+			<SectionHeading title="エッセンシャル リバーシブルバッグ" subtitle="Essential Reversible Bag" />
+
+			<div class="product-detail__body">
+				<div class="product-gallery" id="bag-gallery" data-reveal>
+					<div class="carousel" id="bag-carousel">
+						{
+							bagPhotos.map((_, i) => (
+								<div class="carousel__slide carousel__slide--square">
+									<img src={`/images/bag-${pad2(i + 1)}.png`} alt={`バッグ商品写真 ${i + 1}/10`} loading="lazy" />
+								</div>
+							))
+						}
+					</div>
+					<div class="carousel__dots" id="bag-dots">
+						{
+							bagPhotos.map((_, i) => (
+								<button class="carousel__dot" data-index={i} aria-label={`${i + 1}枚目を表示`} type="button" />
+							))
+						}
+					</div>
+					<div class="thumb-grid" id="bag-thumbs">
+						{
+							bagPhotos.map((_, i) => (
+								<button class="thumb-grid__item" data-index={i} aria-label={`${i + 1}枚目に切り替え`} type="button">
+									<img src={`/images/bag-${pad2(i + 1)}.png`} alt="" loading="lazy" />
+								</button>
+							))
+						}
+					</div>
+					<p class="note">※実機と印刷物では、光の当たり方により色味が異なって見える場合がございます。</p>
+				</div>
+
+				<div class="bag-product__spec" data-reveal>
+					<p class="section__copy">
+						両手を自由にする、カラビナフック付き。DOGウェアと美しく同調する、撥水加工リバーシブル・ハンズフリーバッグ。表と裏でガラリと表情を変えられる贅沢なハイブリッド設計。撥水性機能と、夜道の視認性を高めるリフレクターロゴが、あなたと愛犬のアクティブな日常を上質なクオリティでサポートします。
+					</p>
+					<dl class="spec-list">
+						<div class="spec-list__row">
+							<dt>size</dt>
+							<dd>H45cm / W43cm / D6cm</dd>
+						</div>
+						<div class="spec-list__row">
+							<dt>fabric</dt>
+							<dd>100% nylon</dd>
+						</div>
+					</dl>
+					<p class="spec-list__label">color</p>
+					<div class="swatch-row">
+						<span class="swatch-row__label">face</span>
+						<span class="swatch-bar swatch-bar--face" aria-hidden="true"></span>
+					</div>
+					<div class="swatch-row">
+						<span class="swatch-row__label">back</span>
+						<span class="swatch-bar swatch-bar--back" aria-hidden="true"></span>
+					</div>
+					<p class="price">18,800yen<span class="price__unit">（税込）</span></p>
+					<button class="btn-circle purchase-btn" type="button">Purchase<br />予約 &gt;&gt;</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- Section 11: 着用シーン（森） -->
+		<section class="cutting">
+			<div class="cutting__media">
+				<img src="/images/bag-bg03.png" alt="森の中に立つ男性モデル全身写真" />
+				<p class="cutting__copy" data-reveal>
+					最大の特徴は、ショルダーストラップ（帯）に潜ませたバックルシステム。愛犬のリードをバッグに直接ジョイントすることで、お散歩中の「両手が自由になる」快適さを実現しました。
+				</p>
+			</div>
+		</section>
+
+		<!-- Section 12: 撥水加工素材（バッグ） -->
+		<section class="section split">
+			<SectionHeading title="撥水加工素材" level="h2" />
+			<div class="split__grid split__grid--stacked-media">
+				<div class="split__media split__media--stacked" data-reveal>
+					<img src="/images/hassui-01.png" alt="撥水加工キルティング生地のクローズアップ" />
+					<img src="/images/hassui-02.png" alt="撥水加工生地の質感クローズアップ" />
+				</div>
+				<p class="split__copy" data-reveal>
+					愛犬のウェアと同じ撥水加工テキスタイルを採用。晴れの日も雨の日も、静かに寄り添う相棒に。上質な佇まいが、日常のスタイルにさりげなく溶け込みます。
+				</p>
+			</div>
+		</section>
+
+		<!-- Section 13: ショルダーストラップ仕様 -->
+		<section class="cutting">
+			<SectionHeading title="ショルダーストラップ仕様" level="h2" />
+			<div class="cutting__media">
+				<img src="/images/strap-bg.png" alt="バッグのカラビナフックとショルダーストラップのクローズアップ" />
+				<p class="cutting__copy" data-reveal>
+					両手を自由にする、カラビナフック。<br />DOGウェアと美しく同調する、撥水加工リバーシブル・ハンズフリーバッグ。
+				</p>
+			</div>
+		</section>
+
+		<!-- Section 14: リバーシブル訴求（両面ディテール） -->
+		<section class="section reversible">
+			<SectionHeading title="両面の表情を持つ" />
+			<div class="reversible__layout">
+				<div class="reversible__media reversible__media--1" data-reveal>
+					<img src="/images/bag-bg04.png" alt="黒面のバッグ" />
+				</div>
+				<p class="reversible__text reversible__text--1" data-reveal>
+					気分やスタイルに合わせて、ガラリと印象を変えられるリバーシブル仕様。シックな表情と、軽快なキルティング。
+				</p>
+				<div class="reversible__media reversible__media--2" data-reveal>
+					<img src="/images/bag-bg05.png" alt="グレーキルティング面のバッグ" />
+				</div>
+				<p class="reversible__text reversible__text--2" data-reveal>
+						どちらの面にも、夜間の視認性を高めるリフレクターロゴを配置しました。都市のディテールに溶け込む、デザインと機能性をこの一つに。
+					</p>
+				</div>
+			</section>
+
+			<!-- Section 15: detailed information -->
+			<section class="section detailed-info">
+				<p class="detailed-info__title">detailed information</p>
+				<div class="detailed-info__grid">
+					<div class="detailed-info__card" data-reveal>
+						<div class="detailed-info__icon"><Placeholder label="information-01" ratio="1 / 1" rounded /></div>
+						<p class="detailed-info__card-title">LIMITED MADE IN JAPAN</p>
+						<p class="detailed-info__card-text">
+							私たちのこだわりは、大量生産をしないこと。日本の熟練した職人が、一針一針にクラフトマンシップを注ぎ込み、限定数のみを丁寧に仕立てます。それは、大量消費の時代に向けた、丁寧なものづくりと贅沢の形です。
+						</p>
+					</div>
+					<div class="detailed-info__card" data-reveal>
+						<div class="detailed-info__icon"><Placeholder label="information-02" ratio="1 / 1" rounded /></div>
+						<p class="detailed-info__card-title">ARCHITECTURAL CUTTING</p>
+						<p class="detailed-info__card-text">
+							愛犬の身体のラインを美しく魅せる、立体的なカッティングを追求。ミリ単位で計算されたパターンは、窮屈さを感じにくく、心地よいフィット感を生み出します。
+						</p>
+					</div>
+					<div class="detailed-info__card" data-reveal>
+						<div class="detailed-info__icon"><Placeholder label="information-03" ratio="1 / 1" rounded /></div>
+						<p class="detailed-info__card-title">MONOCHROME LINK</p>
+						<p class="detailed-info__card-text">
+							愛犬のウェアと完全に同質・同素材で仕立てられた、オーナー様のためのバッグ&小物シリーズを展開します。愛犬と響き合う、シックで一体感のあるラグジュアリーな「リンクスタイル」を叶えます。
+						</p>
+					</div>
+					<div class="detailed-info__card" data-reveal>
+						<div class="detailed-info__icon"><Placeholder label="information-04" ratio="1 / 1" rounded /></div>
+						<p class="detailed-info__card-title">HIGH-FUNCTION MINIMALISM</p>
+						<p class="detailed-info__card-text">
+							普段着としても美しい佇まいを演出する撥水素材を採用。落ち着いたトーンの生地は、シーンを問わず大人の気品を漂わせます。
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 16: concept -->
+			<section class="section concept">
+				<div class="concept__media" data-reveal>
+					<img src="/images/concept.png" alt="コート・バッグの製品ディテールを並べたフラットレイ写真" />
+					<p class="concept__label">concept</p>
+				</div>
+				<div class="concept__copy" data-reveal>
+					<p>
+						「R∴」には、“Ready（いつでも備える）”“Routine（日常に溶け込む）”“Rare（希少性）”といった想いを重ね、どんなシーンにも調和する一着を縫製。
+					</p>
+					<p>『R VEIL』は、都市の風景に静かに溶け込む、シックで洗練されたドッグウェアとオーナーズバッグを提案するクチュールブランドです。</p>
+					<p>洗練されたベール（VEIL）で愛犬を包み込む優美なラインは量産品とは一線を画す、大人の品格を醸し出します。</p>
+					<p>「静かに、美しく、雨を纏（まと）う。」<br />愛犬との時間は、何にも代えがたい特別なもの。<br />だからこそ、纏う衣服にも、妥協のない美学とクオリティを。</p>
+					<p>過剰な装飾を削ぎ落としたミニマルなデザイン、雨を弾く撥水機能、そして犬の骨格を美しく魅せるカッティング。</p>
+					<p>愛犬を子どもっぽく着飾るのではなく、一匹の「自立した美しいパートナー」として引き立てます。</p>
+					<p>私たちが目指したのは、いかにも「レインコート」らしい無骨なデザインではなく、街に溶け込む上質なデイリーウェア。<br />日本の職人技が生み出す、機能性と美しさをお届けします。</p>
+					<img class="concept__logo" src="/images/logo-small.png" alt="R VEIL ロゴマーク" />
+				</div>
+			</section>
+
+			<!-- Section 17: memories -->
+			<section class="section memories">
+				<div class="memories__media" data-reveal>
+					<img src="/images/memories.png" alt="愛犬のコートを手描きしたスケッチ" />
+					<p class="memories__label">memories</p>
+				</div>
+				<div class="memories__copy" data-reveal>
+					<p class="memories__heading">「動物と人間を、ひとつに繋ぐデザイン」</p>
+					<p>
+						ぼくのモノ作りの原点は、今も変わらず「手描き」です。<br />
+						元ファッションデザイナーの経験を活かして、犬の服も、<br />
+						人間が使うアイテムも、同じワクワクする気持ちでデザインしています。<br />
+						目指しているのは、動物と人間がもっとひとつに繋がれる世界。<br />
+						自由なペン先から生まれたアイデアを、<br />
+						ぜひ楽しんでみてください！
+					</p>
+					<img class="memories__sign" src="/images/sign.png" alt="Steven のサイン、2026 summer" />
+				</div>
+			</section>
+
+			<!-- Section 18: Follow us -->
+			<section class="sns">
+				<div class="sns__media">
+					<img src="/images/sns-bg.png" alt="森の中に立つ男性モデルと愛犬" />
+					<div class="sns__copy" data-reveal>
+						<p class="sns__label">Follow us</p>
+						<ul class="sns__icons">
+							<li><a href="#" aria-label="Facebook"><img src="/images/icon-01.png" alt="" /></a></li>
+							<li><a href="#" aria-label="X"><img src="/images/icon-02.png" alt="" /></a></li>
+							<li><a href="#" aria-label="Instagram"><img src="/images/icon-03.png" alt="" /></a></li>
+							<li><a href="#" aria-label="LinkedIn"><img src="/images/icon-04.png" alt="" /></a></li>
+							<li><a href="#" aria-label="YouTube"><img src="/images/icon-05.png" alt="" /></a></li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<!-- Section 19: news -->
+			<section class="section news">
+				<p class="news__title">news</p>
+				<div class="news__list">
+					<a class="news__item" href="#" data-reveal>
+						<div class="news__thumb"><img src="/images/news-04.png" alt="サングラスとポーチのプロダクトショット" /></div>
+						<div class="news__body">
+							<p class="news__text">ご予約のお客様先着20名に断熱素材、撥水加工小物入れをプレゼント。</p>
+							<p class="news__link">詳細はこちら&gt;&gt;</p>
+						</div>
+					</a>
+					<a class="news__item" href="#" data-reveal>
+						<div class="news__thumb"><img src="/images/news-03.png" alt="森の中でバッグを持つモデル" /></div>
+						<div class="news__body">
+							<p class="news__text">ご予約のお客様先着20名に断熱素材、撥水加工小物入れをプレゼント。</p>
+							<p class="news__status">comming soon</p>
+						</div>
+					</a>
+					<a class="news__item" href="#" data-reveal>
+						<div class="news__thumb"><img src="/images/news-02.png" alt="都市で犬と佇む男性モデル" /></div>
+						<div class="news__body">
+							<p class="news__text">ご予約のお客様先着20名に断熱素材、撥水加工小物入れをプレゼント。</p>
+							<p class="news__status">comming soon</p>
+						</div>
+					</a>
+					<a class="news__item" href="#" data-reveal>
+						<div class="news__thumb"><img src="/images/news-01.png" alt="犬の顔を左右対称に描いたアートワーク" /></div>
+						<div class="news__body">
+							<p class="news__text">Arts 犬展 past and the past</p>
+							<p class="news__status">comming soon</p>
+						</div>
+					</a>
+				</div>
+			</section>
+		</main>
+</BaseLayout>
+
+<style>
+	.section {
+		padding: 64px 20px;
+	}
+
+	.section__copy {
+		margin: 0 0 24px;
+		color: var(--color-body);
+	}
+
+	/* Section 01: hero */
+	.hero {
+		position: relative;
+		width: 100%;
+		height: 100svh;
+		overflow: hidden;
+	}
+
+	.hero__media {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 32px;
+		text-align: center;
+		background: repeating-linear-gradient(135deg, #1a1a1c 0 10px, #202022 10px 20px);
+		color: var(--color-caption);
+		font-size: 11px;
+		letter-spacing: 0.04em;
+	}
+
+	.hero__controls {
+		position: absolute;
+		left: 20px;
+		right: 20px;
+		bottom: 24px;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 8px 12px;
+		background: rgba(3, 3, 5, 0.55);
+		border: 1px solid var(--color-divider);
+		border-radius: 999px;
+		backdrop-filter: blur(4px);
+	}
+
+	.hero__play,
+	.hero__icon {
+		flex: none;
+		width: 24px;
+		height: 24px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+		border: none;
+		color: var(--color-heading);
+		font-size: 11px;
+	}
+
+	.hero__seek {
+		position: relative;
+		flex: 1;
+		height: 2px;
+		background: var(--color-divider);
+	}
+
+	.hero__seek-fill {
+		position: absolute;
+		inset: 0;
+		width: 5%;
+		background: var(--color-heading);
+	}
+
+	.hero__time {
+		flex: none;
+		color: var(--color-caption);
+		font-size: 10px;
+		white-space: nowrap;
+	}
+
+	/* Section 02: news bar */
+	.news-bar {
+		background: var(--color-newsbar-bg);
+		padding: 14px 20px;
+	}
+
+	.news-bar__text {
+		margin: 0;
+		color: var(--color-body);
+		font-size: 11px;
+		letter-spacing: 0.02em;
+	}
+
+	.news-bar__label {
+		margin-right: 8px;
+		color: var(--color-heading);
+		font-weight: 700;
+		letter-spacing: 0.1em;
+	}
+
+	.news-bar__link {
+		margin-left: 6px;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	/* Section 03: intro */
+	.intro {
+		position: relative;
+	}
+
+	.intro__media {
+		width: 100%;
+		aspect-ratio: 3840 / 2000;
+		object-fit: cover;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.intro__copy {
+		position: absolute;
+		left: 20px;
+		bottom: 28px;
+		right: 20px;
+	}
+
+	.intro__title {
+		margin: 0 0 12px;
+		color: var(--color-heading);
+		font-size: 36px;
+		font-weight: 300;
+		letter-spacing: 0.15em;
+	}
+
+	.intro__subcopy {
+		margin: 0;
+		color: var(--color-body);
+		font-size: 16px;
+		line-height: 1.8;
+		text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+	}
+
+	/* Section 06: 立体裁断
+	   写真が横長（3840×2438）でモバイルでは高さが小さくなるため、モバイルはテキストを画像の下に配置し、
+	   写真が縦に十分な高さを持つPC幅でのみ画像上へのオーバーレイに切り替える。 */
+	.cutting {
+		padding: 0 0 96px;
+	}
+
+	/* 写真はフルブリードのままだが、見出しは他の.sectionと同じコンテンツ幅に収める */
+	.cutting :global(.section-heading) {
+		padding: 0 20px;
+	}
+
+	.cutting__media {
+		position: relative;
+	}
+
+	/* vw基準の高さにすることで、フルブリード幅（cutting）とセクション内padding幅（split)が異なっても
+	   立体裁断・撥水加工素材・夜行反射機能の3画像の高さがSPで揃う */
+	.cutting__media img {
+		width: 100%;
+		height: 120vw;
+		aspect-ratio: auto;
+		object-fit: cover;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.cutting__copy {
+		margin: 24px 20px 0;
+		color: var(--color-body);
+	}
+
+	/* Section 04: interlude */
+	.interlude {
+		position: relative;
+	}
+
+	.interlude__media {
+		width: 100%;
+		aspect-ratio: 3840 / 2640;
+		object-fit: cover;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.interlude__copy {
+		position: absolute;
+		top: 24px;
+		left: 20px;
+		right: 20px;
+		margin: 0;
+		color: var(--color-body);
+		text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+	}
+
+	/* split (text + image) blocks */
+	.split__grid {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.split__grid--images {
+		flex-direction: row;
+	}
+
+	.split__grid--images > div {
+		flex: 1 1 0;
+	}
+
+	/* Size Guideの図解・表は写真ではないため、クロップやフィルターをかけず自然な比率で表示 */
+	.split__grid--images img {
+		width: 100%;
+		display: block;
+	}
+
+	/* Size Guideのみモバイルは縦並び（両面ディテール等の他の画像+画像セクションには影響させない） */
+	.size-guide .split__grid--images {
+		flex-direction: column;
+	}
+
+	.split__media img {
+		width: 100%;
+		display: block;
+		height: 120vw;
+		aspect-ratio: auto;
+		object-fit: cover;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.split__copy {
+		margin: 0 0 24px;
+		color: var(--color-body);
+	}
+
+	/* 撥水加工素材（バッグ）：写真2枚を縦に積んで1つの画像カラムにする */
+	.split__media--stacked {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.split__media--stacked img {
+		width: 100%;
+		height: auto;
+		aspect-ratio: auto;
+		display: block;
+		object-fit: cover;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	/* material detail */
+	.material-detail__icons {
+		display: flex;
+		gap: 24px;
+		margin-bottom: 32px;
+	}
+
+	.material-detail__icon {
+		width: 96px;
+	}
+
+	.material-detail__icon img {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		border-radius: 50%;
+		display: block;
+	}
+
+	.material-detail__icon-caption {
+		margin: 12px 0 0;
+		color: var(--color-caption);
+		font-size: 14px;
+		letter-spacing: 0.04em;
+		text-align: left;
+	}
+
+	/* Section 10: 職人の手元バナー + 日本製・限定生産 */
+	.craft__media img {
+		width: 100%;
+		aspect-ratio: 3840 / 950;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.craft__copy {
+		padding: 64px 20px;
+		text-align: center;
+	}
+
+	.craft__label {
+		margin: 0 0 24px;
+		color: var(--color-caption);
+		font-size: 20px;
+		letter-spacing: 0.06em;
+	}
+
+	.craft__text {
+		margin: 0;
+		color: var(--color-body);
+		font-size: 16px;
+		line-height: 1.8;
+	}
+
+	/* Section 11: Size Guide */
+	.size-guide__title {
+		margin: 0 0 24px;
+		color: var(--color-heading);
+		font-size: 24px;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+	}
+
+	/* reversible（両面の表情を持つ）：モバイルは画像1→テキスト1→画像2→テキスト2の縦積み、
+	   PCではデザインカンプ通り2枚を斜めに重ねるレイアウトに切り替える */
+	.reversible__media--1,
+	.reversible__media--2 {
+		margin-bottom: 24px;
+	}
+
+	.reversible__media--1 img,
+	.reversible__media--2 img {
+		width: 100%;
+		aspect-ratio: 3 / 4;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.reversible__text--1,
+	.reversible__text--2 {
+		margin: 0 20px 24px;
+		color: var(--color-body);
+	}
+
+	/* menswear */
+	.menswear__grid {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.menswear__grid img {
+		width: 100%;
+		min-width: 0;
+		aspect-ratio: 1920 / 2012;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	/* デザインカンプ通り、2枚の写真の継ぎ目に重なる半透明の円形（フロストガラス風）にコピーを乗せる */
+	.menswear__copy {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: min(320px, 78%);
+		aspect-ratio: 1 / 1;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 24px;
+		text-align: center;
+		color: var(--color-heading);
+		font-size: 14px;
+		line-height: 1.8;
+		background: rgba(180, 180, 185, 0.35);
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+	}
+
+	/* product detail (bag / coat) */
+	.product-detail__body {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	.coat-product__info .section__copy {
+		margin-bottom: 24px;
+	}
+
+	.spec-list {
+		margin: 0 0 20px;
+	}
+
+	.spec-list__row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px 0;
+		border-bottom: 1px solid var(--color-divider);
+	}
+
+	.spec-list__row dt {
+		color: var(--color-caption);
+		font-size: 11px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.spec-list__row dd {
+		margin: 0;
+		color: var(--color-body);
+		font-size: 13px;
+	}
+
+	.spec-list__label {
+		margin: 16px 0 8px;
+		color: var(--color-caption);
+		font-size: 11px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.swatch-row {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 10px;
+	}
+
+	.swatch-row__label {
+		flex: 0 0 40px;
+		color: var(--color-body);
+		font-size: 13px;
+	}
+
+	/* デザインカンプの3トーン・グラデーションバー表現を近似（正確な配色は素材確定時に要調整） */
+	.swatch-bar {
+		display: block;
+		flex: 1 1 auto;
+		max-width: 220px;
+		margin-bottom: 16px;
+		height: 16px;
+		border-radius: 2px;
+		border: 1px solid var(--color-divider);
+	}
+
+	.swatch-bar--coat {
+		background: linear-gradient(to right, #55565a 0% 66%, #d6d6d9 66% 84%, #17181a 84% 100%);
+	}
+
+	.swatch-bar--face {
+		background: linear-gradient(to right, #2a2b2e 0% 68%, #c9c9cc 68% 86%, #101113 86% 100%);
+	}
+
+	.swatch-bar--back {
+		background: linear-gradient(to right, #b9babd 0% 72%, #45464a 72% 88%, #1a1b1d 88% 100%);
+	}
+
+	.price {
+		margin: 0 0 24px;
+		color: var(--color-heading);
+		font-size: 20px;
+		font-weight: 500;
+	}
+
+	.price__unit {
+		margin-left: 6px;
+		color: var(--color-caption);
+		font-size: 11px;
+		font-weight: 400;
+	}
+
+	.purchase-btn {
+		width: 96px;
+		height: 96px;
+		line-height: 1.5;
+	}
+
+	.carousel {
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		gap: 12px;
+		margin-bottom: 12px;
+		scrollbar-width: none;
+	}
+
+	.carousel::-webkit-scrollbar {
+		display: none;
+	}
+
+	.carousel__slide {
+		flex: 0 0 100%;
+		scroll-snap-align: start;
+	}
+
+	.carousel__slide--square {
+		aspect-ratio: 1 / 1;
+		border-radius: 20px;
+		overflow: hidden;
+	}
+
+	.carousel__slide--square img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.carousel__dots {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+		margin-bottom: 20px;
+	}
+
+	.carousel__dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		border: none;
+		background: var(--color-divider);
+		padding: 0;
+	}
+
+	.carousel__dot.is-active {
+		background: var(--color-heading);
+	}
+
+	.thumb-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 8px;
+	}
+
+	.thumb-grid--cols-3 {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.thumb-grid__item {
+		background: none;
+		border: 1px solid transparent;
+		padding: 0;
+		aspect-ratio: 1 / 1;
+		border-radius: 20px;
+		overflow: hidden;
+	}
+
+	.thumb-grid__item img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.thumb-grid__item.is-active {
+		border-color: var(--color-heading);
+	}
+
+	.note {
+		margin: 24px 0 0;
+		color: var(--color-caption);
+		font-size: 10px;
+		line-height: 1.8;
+	}
+
+	/* Size Guide直下の注意書きは読みやすさのため14pxにする（バッグの注記は10pxのまま） */
+	.size-guide .note {
+		font-size: 14px;
+	}
+
+	/* Section 15: detailed information */
+	.detailed-info__title {
+		margin: 0 0 24px;
+		color: var(--color-heading);
+		font-size: 20px;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+	}
+
+	.detailed-info__grid {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.detailed-info__card {
+		position: relative;
+		border: 1px solid var(--color-divider);
+		border-radius: 8px;
+		padding: 32px 20px 20px;
+	}
+
+	.detailed-info__icon {
+		position: absolute;
+		top: -16px;
+		left: 20px;
+		width: 48px;
+	}
+
+	.detailed-info__card-title {
+		margin: 8px 0 12px;
+		color: var(--color-heading);
+		font-size: 15px;
+		letter-spacing: 0.04em;
+	}
+
+	.detailed-info__card-text {
+		margin: 0;
+		color: var(--color-body);
+		font-size: 14px;
+		line-height: 1.8;
+	}
+
+	/* Section 16: concept */
+	/* memoriesと隙間なく連続させるため下側の.sectionパディングを打ち消す */
+	.concept {
+		display: flex;
+		flex-direction: column;
+		padding-bottom: 0;
+	}
+
+	/* 写真列とテキスト列を隙間なく揃えるため、両者ともリフトなし（フェードのみ）にしてズレの余地をなくす */
+	.concept__media,
+	.concept__copy,
+	.memories__media,
+	.memories__copy {
+		transform: none !important;
+	}
+
+	.concept__media {
+		position: relative;
+	}
+
+	.concept__media img {
+		width: 100%;
+		aspect-ratio: 3 / 4;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.concept__label {
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		margin: 0;
+		color: var(--color-heading);
+		font-size: 20px;
+	}
+
+	.concept__copy {
+		padding: 40px 20px;
+		background: var(--color-newsbar-bg);
+	}
+
+	.concept__copy p {
+		margin: 0 0 24px;
+		color: var(--color-body);
+	}
+
+	.concept__logo {
+		width: 64px;
+		margin: 8px 0 0 auto;
+		display: block;
+	}
+
+	/* Section 17: memories */
+	/* conceptと隙間なく連続させるため上側の.sectionパディングを打ち消す */
+	.memories {
+		display: flex;
+		flex-direction: column;
+		padding-top: 0;
+	}
+
+	.memories__media {
+		position: relative;
+	}
+
+	.memories__media img {
+		width: 100%;
+		aspect-ratio: 3 / 4;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.memories__label {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		margin: 0;
+		color: var(--color-heading);
+		font-size: 20px;
+	}
+
+	/* デザインカンプ実測：テキストは列の上部ではなく下部寄りに配置される（列高の約38%が上部の余白） */
+	.memories__copy {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: 40px 20px;
+		background: var(--color-newsbar-bg);
+	}
+
+	.memories__heading {
+		margin: 0 0 24px;
+		color: var(--color-heading);
+		font-size: 20px;
+		line-height: 1.6;
+	}
+
+	.memories__copy p {
+		margin: 0 0 24px;
+		color: var(--color-body);
+	}
+
+	.memories__sign {
+		width: 140px;
+		margin: 8px 0 0 auto;
+		display: block;
+	}
+
+	/* Section 18: Follow us（フルブリード写真＋右下にラベル＋SNSアイコン） */
+	.sns__media {
+		position: relative;
+	}
+
+	.sns__media img {
+		width: 100%;
+		aspect-ratio: 3840 / 2640;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.sns__copy {
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
+		text-align: right;
+	}
+
+	.sns__label {
+		margin: 0 0 8px;
+		color: var(--color-heading);
+		font-size: 16px;
+		text-align: left;
+	}
+
+	.sns__icons {
+		display: flex;
+		justify-content: flex-end;
+		gap: 10px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.sns__icons li {
+		width: 32px;
+	}
+
+	.sns__icons a {
+		display: block;
+	}
+
+	.sns__icons img {
+		width: 100%;
+		aspect-ratio: 1 / 1;
+		object-fit: contain;
+		display: block;
+	}
+
+	/* Section 19: news */
+	.news__title {
+		margin: 0 0 24px;
+		color: var(--color-heading);
+		font-size: 20px;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+	}
+
+	.news__list {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.news__item {
+		display: flex;
+		align-items: center;
+		gap: 20px;
+		padding: 20px 0;
+		border-bottom: 1px dashed var(--color-divider);
+		text-decoration: none;
+	}
+
+	.news__item:last-child {
+		border-bottom: none;
+	}
+
+	.news__thumb {
+		flex: 0 0 140px;
+	}
+
+	.news__thumb img {
+		width: 100%;
+		aspect-ratio: 926 / 440;
+		object-fit: cover;
+		display: block;
+		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	.news__body {
+		flex: 1 1 0;
+		min-width: 0;
+	}
+
+	.news__text {
+		margin: 0 0 8px;
+		color: var(--color-body);
+		font-size: 13px;
+		line-height: 1.6;
+	}
+
+	.news__link {
+		margin: 0;
+		color: var(--color-body);
+		font-size: 12px;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	.news__status {
+		margin: 0;
+		color: var(--color-caption);
+		font-size: 12px;
+		letter-spacing: 0.04em;
+	}
+
+	@media (min-width: 768px) {
+		/* コンテンツ最大幅（design.md 6.1）: 一般的なグリッド幅として1200pxに調整 */
+		.section {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 96px 40px;
+		}
+
+		/* ヒーロー動画・背景写真などのフルブリード要素は画面幅いっぱい（100vw）のまま制限しない */
+		.news-bar__text,
+		.intro__copy,
+		.interlude__copy {
+			max-width: 1200px;
+			margin-left: auto;
+			margin-right: auto;
+			padding-left: 40px;
+			padding-right: 40px;
+		}
+
+		.intro__copy,
+		.interlude__copy {
+			left: 0;
+			right: 0;
+		}
+
+		.intro__subcopy {
+			font-size: 22px;
+		}
+
+		.interlude__copy {
+			top: 40px;
+			font-size: 22px;
+			line-height: 1.7;
+		}
+
+		/* 円はコンテンツ幅ではなく写真の継ぎ目中心のまま、PCでは少し大きくする */
+		.menswear__copy {
+			width: min(420px, 60%);
+			font-size: 22px;
+		}
+
+		/* PCでは写真が十分な高さになるため、モバイルの通常フローから画像上のオーバーレイに切り替える。
+		   デザインカンプ通り、テキストは画像上部寄り・半透明パネル・コンテンツ幅の約半分に収める。 */
+		.cutting {
+			padding: 0;
+		}
+
+		.cutting :global(.section-heading) {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 40px;
+		}
+
+		.cutting__copy {
+			position: absolute;
+			top: 12%;
+			left: max(40px, calc((100% - 1200px) / 2 + 40px));
+			max-width: 600px;
+			margin: 0;
+			padding: 28px 32px;
+			background: #0303051c;
+			font-size: 22px;
+			line-height: 1.7;
+		}
+
+		/* コンテンツ幅の右端（立体裁断のleftと対になる基準）に揃える */
+		.sns__copy {
+			right: max(40px, calc((100% - 1200px) / 2 + 40px));
+			bottom: 40px;
+		}
+
+		.sns__label {
+			font-size: 20px;
+		}
+
+		.sns__icons li {
+			width: 40px;
+		}
+
+		/* PCでは各画像本来の縦横比に戻す（モバイルのみ3セクションの高さを揃えるための仮の高さ指定）。
+		   .cuttingは立体裁断・着用シーン・ショルダーストラップ仕様の3箇所で使い回しており、画像ごとに比率が異なる。 */
+		.cutting__media img {
+			height: auto;
+		}
+
+		.cutting__media img[src*='saidan'] {
+			aspect-ratio: 3840 / 2438;
+		}
+
+		.cutting__media img[src*='bag-bg03'] {
+			aspect-ratio: 3840 / 3010;
+		}
+
+		.cutting__media img[src*='strap-bg'] {
+			aspect-ratio: 3838 / 1928;
+		}
+
+		.split__media img {
+			height: auto;
+			aspect-ratio: auto;
+		}
+
+		.split__grid {
+			flex-direction: row;
+			align-items: flex-end;
+			gap: 40px;
+		}
+
+		.split__grid > .split__media,
+		.split__grid > .split__copy {
+			flex: 1 1 0;
+		}
+
+		.size-guide .split__grid--images {
+			flex-direction: row;
+		}
+
+		/* デザインカンプ通り、見出しはテキスト側の列に揃える（写真が左/テキストが右の場合は右揃え）。
+		   画像+画像の構成（両面ディテール等）は対象外。 */
+		.split:not(.split--reverse):not(:has(.split__grid--images)) :global(.section-heading__title) {
+			text-align: right;
+		}
+
+		/* 夜行反射機能はデザインカンプ通りテキストが左・写真が右（他のsplitは写真が左） */
+		.split--reverse .split__media {
+			order: 2;
+		}
+
+		.split--reverse .split__copy {
+			order: 1;
+		}
+
+		/* デザインカンプ通り、アイコン群は左・見出しは右に揃える（撥水加工素材と同じパターン） */
+		.material-detail :global(.section-heading__title) {
+			text-align: right;
+		}
+
+		.material-detail__icons {
+			gap: 24px;
+		}
+
+		.material-detail__icon {
+			width: 150px;
+		}
+
+		/* デザインカンプ実測：写真同士は重ならず隣接（48%/52%で継ぎ目が一致）、
+		   写真2が下にずれた分だけテキストが対角の空きスペースに入る。 */
+		.reversible__layout {
+			position: relative;
+			aspect-ratio: 111 / 100;
+		}
+
+		.reversible__media--1,
+		.reversible__media--2 {
+			position: absolute;
+			margin-bottom: 0;
+		}
+
+		.reversible__media--1 {
+			top: 0;
+			left: 0;
+			width: 48%;
+			z-index: 1;
+		}
+
+		.reversible__media--2 {
+			top: 23%;
+			right: 0;
+			width: 52%;
+			z-index: 1;
+		}
+
+		.reversible__text--1,
+		.reversible__text--2 {
+			position: absolute;
+			width: 40%;
+			margin: 0;
+			z-index: 2;
+		}
+
+		.reversible__text--1 {
+			top: 6%;
+			right: 2%;
+		}
+
+		.reversible__text--2 {
+			bottom: 4%;
+			left: 2%;
+			width: 44%;
+		}
+
+		/* PCでは各画像本来の縦横比に戻す（モバイルは3/4で統一） */
+		.reversible__media--1 img {
+			aspect-ratio: 1788 / 2620;
+		}
+
+		.reversible__media--2 img {
+			aspect-ratio: 1818 / 2548;
+		}
+
+		/* pのため16px以上を維持しつつ、PCでは意図した3行以外で折り返さないよう十分な幅を確保する */
+		.craft__copy {
+			padding: 96px 40px;
+		}
+
+		.craft__text {
+			max-width: 95%;
+			margin: 0 auto;
+			white-space: nowrap;
+		}
+
+		.menswear__grid {
+			flex-direction: row;
+		}
+
+		.menswear__grid img {
+			flex: 1 1 0;
+			width: auto;
+		}
+
+		.product-detail__body {
+			flex-direction: row;
+			align-items: flex-start;
+			gap: 64px;
+		}
+
+		/* ギャラリー側は高さ超過を防ぐため幅を固定し、テキスト側がコンテンツ幅いっぱいまで伸びるようにする */
+		.bag-product__spec,
+		.coat-product__info {
+			flex: 1 1 0;
+		}
+
+		/* モバイルはDOM順(画像→テキスト→予約ボタン)通りに積む。
+		   バッグはPCのみデザインカンプ通りテキスト側を左に視覚的に入れ替える（コートは画像が左のままでよい）。 */
+		#bag-gallery {
+			order: 2;
+		}
+
+		.bag-product__spec {
+			order: 1;
+		}
+
+		/* メイン写真+サムネイル+ドットが1画面の高さに収まるよう、写真の高さをviewport基準で制限する。
+		   ギャラリー全体（写真・ドット・サムネイル）の幅を先に確定させ、各要素はそこからの割合で追従させる。 */
+		.product-gallery {
+			flex: 0 1 auto;
+		}
+
+		/* テキスト側（flex:1 1 0）とできるだけ均等な見た目になるよう、高さに収まる範囲で最大限広げる。
+		   コート・バッグとも正方形写真＋サムネイルグリッドのため、同じ上限値で揃える。 */
+		#coat-gallery,
+		#bag-gallery {
+			width: min(60vh, 500px);
+		}
+
+		#coat-carousel,
+		#bag-carousel {
+			width: 100%;
+			height: auto;
+			aspect-ratio: 1 / 1;
+			margin: 0 auto 12px;
+		}
+
+		#coat-carousel .carousel__slide,
+		#bag-carousel .carousel__slide {
+			height: 100%;
+		}
+
+		.product-gallery .thumb-grid,
+		.product-gallery .carousel__dots {
+			width: 100%;
+		}
+
+		/* Section 15: detailed information */
+		.detailed-info__grid {
+			flex-direction: row;
+			flex-wrap: wrap;
+			gap: 24px;
+		}
+
+		.detailed-info__card {
+			flex: 1 1 calc(50% - 12px);
+			min-width: 320px;
+			padding: 40px 32px 32px;
+		}
+
+		.detailed-info__icon {
+			width: 56px;
+			top: -20px;
+		}
+
+		.detailed-info__card-title {
+			font-size: 17px;
+		}
+
+		.detailed-info__card-text {
+			font-size: 15px;
+		}
+
+		/* Section 16: concept / Section 17: memories
+		   デザインカンプ実測：写真は約27%、テキストが約73%。
+		   concept＝写真(左)→テキスト(右)、memories＝テキスト(左)→写真(右)で左右が逆。
+		   HTMLはモバイル同様「画像→テキスト」の順で書いているため、memoriesのみPCでorderを入れ替える。 */
+		.concept,
+		.memories {
+			flex-direction: row;
+			align-items: stretch;
+		}
+
+		.concept {
+			padding-bottom: 0;
+		}
+
+		.memories {
+			padding-top: 0;
+		}
+
+		.concept__media,
+		.memories__media {
+			flex: 0 0 27%;
+		}
+
+		.concept__media img,
+		.memories__media img {
+			height: 100%;
+			aspect-ratio: auto;
+		}
+
+		.concept__copy,
+		.memories__copy {
+			flex: 1 1 0;
+			padding: 80px 60px;
+		}
+
+		.memories__media {
+			order: 2;
+		}
+
+		.memories__copy {
+			order: 1;
+		}
+
+		.concept__label,
+		.memories__label {
+			font-size: 24px;
+		}
+
+		/* Section 19: news */
+		.news__item {
+			gap: 32px;
+			padding: 28px 0;
+		}
+
+		.news__thumb {
+			flex: 0 0 260px;
+		}
+
+		.news__text {
+			font-size: 16px;
+		}
+
+		.news__link,
+		.news__status {
+			font-size: 14px;
+		}
+	}
+</style>
+
+<script>
+	const heroPlay = document.getElementById('hero-play');
+	if (heroPlay) {
+		heroPlay.addEventListener('click', () => {
+			const isPlaying = heroPlay.dataset.playing === 'true';
+			heroPlay.textContent = isPlaying ? '▶' : '❚❚';
+			heroPlay.dataset.playing = isPlaying ? 'false' : 'true';
+		});
+	}
+
+	function initGallery(prefix) {
+		const carousel = document.getElementById(`${prefix}-carousel`);
+		const dotsContainer = document.getElementById(`${prefix}-dots`);
+		const thumbsContainer = document.getElementById(`${prefix}-thumbs`);
+
+		if (!carousel || !dotsContainer || !thumbsContainer) return;
+
+		const slides = Array.from(carousel.querySelectorAll('.carousel__slide'));
+		const dots = Array.from(dotsContainer.querySelectorAll('.carousel__dot'));
+		const thumbs = Array.from(thumbsContainer.querySelectorAll('.thumb-grid__item'));
+
+		let activeIndex = 0;
+
+		const setActive = (index) => {
+			activeIndex = index;
+			dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+			thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === index));
+		};
+
+		const goTo = (index) => {
+			const slide = slides[index];
+			if (slide) {
+				carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+			}
+		};
+
+		const AUTOPLAY_INTERVAL = 4000;
+		let autoplayTimer = 0;
+
+		const startAutoplay = () => {
+			autoplayTimer = window.setInterval(() => {
+				goTo((activeIndex + 1) % slides.length);
+			}, AUTOPLAY_INTERVAL);
+		};
+
+		const restartAutoplay = () => {
+			window.clearInterval(autoplayTimer);
+			startAutoplay();
+		};
+
+		dots.forEach((dot, i) =>
+			dot.addEventListener('click', () => {
+				goTo(i);
+				restartAutoplay();
+			}),
+		);
+		thumbs.forEach((thumb, i) =>
+			thumb.addEventListener('click', () => {
+				goTo(i);
+				restartAutoplay();
+			}),
+		);
+
+		const slideObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						setActive(slides.indexOf(entry.target));
+					}
+				});
+			},
+			{ root: carousel, threshold: 0.6 },
+		);
+		slides.forEach((slide) => slideObserver.observe(slide));
+
+		setActive(0);
+		startAutoplay();
+	}
+
+	initGallery('bag');
+	initGallery('coat');
+</script>

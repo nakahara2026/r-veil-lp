@@ -1,0 +1,125 @@
+---
+const links = [
+	'reservation',
+	'privacy policy',
+	'contact',
+	'payment',
+	'concept',
+	'contact us',
+	'pre-order benefit',
+	'question and answer',
+];
+---
+
+<footer class="site-footer">
+	<div class="site-footer__body">
+		<ul class="site-footer__links">
+			{
+				links.map((label) => (
+					<li>
+						<a href="#">{label}</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	<div class="site-footer__bottom">
+		<p class="site-footer__copy">R VEIL &copy; 2026</p>
+	</div>
+</footer>
+
+<button id="back-to-top" class="back-to-top" type="button">Back To<br />Top</button>
+
+<style>
+	.site-footer {
+		background: var(--color-newsbar-bg);
+	}
+
+	.site-footer__body {
+		padding: 48px 20px 64px;
+	}
+
+	.site-footer__links {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.site-footer__links a {
+		color: var(--color-caption);
+		font-size: 14px;
+		text-decoration: none;
+		letter-spacing: 0.02em;
+	}
+
+	.site-footer__bottom {
+		background: var(--color-bg);
+		padding: 16px 20px;
+		text-align: center;
+	}
+
+	.site-footer__copy {
+		margin: 0;
+		color: var(--color-caption);
+		font-size: 11px;
+		letter-spacing: 0.03em;
+	}
+
+	/* 常に画面右下に固定表示 */
+	.back-to-top {
+		position: fixed;
+		right: 16px;
+		bottom: 16px;
+		z-index: 60;
+		width: 80px;
+		aspect-ratio: 1 / 1;
+		border-radius: 50%;
+		border: 1px solid var(--color-divider);
+		background: var(--color-accent);
+		color: var(--color-heading);
+		font-size: 11px;
+		line-height: 1.4;
+		letter-spacing: 0.02em;
+		transition: transform 0.2s ease;
+	}
+
+	.back-to-top:hover,
+	.back-to-top:active {
+		transform: scale(1.05);
+	}
+
+	@media (min-width: 768px) {
+		.site-footer__body {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 80px 40px;
+		}
+
+		.site-footer__links {
+			gap: 20px;
+		}
+
+		.site-footer__links a {
+			font-size: 15px;
+		}
+
+		.back-to-top {
+			right: 32px;
+			bottom: 32px;
+			width: 100px;
+			font-size: 13px;
+		}
+	}
+</style>
+
+<script>
+	const backToTop = document.getElementById('back-to-top');
+
+	backToTop?.addEventListener('click', () => {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	});
+</script>
