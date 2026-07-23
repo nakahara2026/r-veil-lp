@@ -3,7 +3,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <header class="site-header">
-	<a href={`${base}/`} class="site-header__logo">R VEIL</a>
+	<h1 class="site-header__logo">
+		<a href={`${base}/`}>
+			<img src={`${base}/images/logo.png`} alt="R VEIL" />
+		</a>
+	</h1>
 </header>
 
 <style>
@@ -17,11 +21,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	.site-header__logo {
+		margin: 0;
+	}
+
+	.site-header__logo a {
 		display: inline-block;
-		color: var(--color-heading);
-		font-size: 16px;
-		font-weight: 700;
-		letter-spacing: 0.1em;
-		text-decoration: none;
+	}
+
+	.site-header__logo img {
+		display: block;
+		height: 65px;
+		width: auto;
 	}
 </style>

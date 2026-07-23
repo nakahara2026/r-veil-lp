@@ -1,10 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import Placeholder from '../components/Placeholder.astro';
 
 const bagPhotos = Array.from({ length: 10 });
-const coatPhotos = Array.from({ length: 9 });
+const coatPhotos = Array.from({ length: 10 });
 const pad2 = (n) => String(n).padStart(2, '0');
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -13,15 +12,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	<main>
 		<!-- Section 01: ヒーロー（動画） -->
 		<section class="hero">
-			<div class="hero__media">
-				<span class="hero__media-label">ヒーロー動画: 森・霧の航空/地上ショット（mp4, ループ, 尺約2:10）</span>
-			</div>
+			<video class="hero__media" src={`${base}/videos/hero.mp4`} autoplay muted loop playsinline></video>
 			<div class="hero__controls">
-				<button class="hero__play" id="hero-play" type="button" aria-label="再生 / 一時停止">▶</button>
-				<div class="hero__seek"><span class="hero__seek-fill"></span></div>
-				<span class="hero__time">00:01 / 02:10</span>
-				<button class="hero__icon" type="button" aria-label="音量">♪</button>
-				<button class="hero__icon" type="button" aria-label="フルスクリーン">⤢</button>
+				<button class="hero__play" id="hero-play" type="button" aria-label="再生 / 一時停止">❚❚</button>
+				<div class="hero__seek" id="hero-seek"><span class="hero__seek-fill" id="hero-seek-fill"></span></div>
+				<span class="hero__time" id="hero-time">00:00 / 00:00</span>
+				<button class="hero__icon" id="hero-mute" type="button" aria-label="音量">♪</button>
+				<button class="hero__icon" id="hero-fullscreen" type="button" aria-label="フルスクリーン">⤢</button>
 			</div>
 		</section>
 
@@ -41,7 +38,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 				alt="雨上がりの街路で、しつけられた犬（コート着用）と男性が向き合う構図"
 			/>
 			<div class="intro__copy" data-reveal>
-				<h1 class="intro__title">UNISON</h1>
+				<p class="intro__title">UNISON</p>
 				<p class="intro__subcopy">同じ素材、同じ機能、同じ表情。<br />境界線を越える、タクティカル・ドッグウェア。</p>
 			</div>
 		</section>
@@ -64,7 +61,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 						{
 							coatPhotos.map((_, i) => (
 								<div class="carousel__slide carousel__slide--square">
-									<img src={`${base}/images/coat-${pad2(i + 1)}.png`} alt={`コート商品写真 ${i + 1}/9`} loading="lazy" />
+									<img src={`${base}/images/coat-${pad2(i + 1)}.png`} alt={`コート商品写真 ${i + 1}/10`} loading="lazy" />
 								</div>
 							))
 						}
@@ -76,7 +73,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 							))
 						}
 					</div>
-					<div class="thumb-grid thumb-grid--cols-3" id="coat-thumbs">
+					<div class="thumb-grid" id="coat-thumbs">
 						{
 							coatPhotos.map((_, i) => (
 								<button class="thumb-grid__item" data-index={i} aria-label={`${i + 1}枚目に切り替え`} type="button">
@@ -121,7 +118,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		</section>
 
 		<!-- Section 07: 撥水加工素材 -->
-		<section class="section split">
+		<section class="section split hassui-bg">
 			<SectionHeading title="撥水加工素材" level="h2" />
 			<div class="split__grid">
 				<div class="split__media" data-reveal>
@@ -133,9 +130,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			</div>
 		</section>
 
-		<!-- Section 08: 夜行反射機能（テキスト左・写真右） -->
+		<!-- Section 08: リフレクターライン（テキスト左・写真右） -->
 		<section class="section split split--reverse">
-			<SectionHeading title="夜行反射機能" level="h2" />
+			<SectionHeading title="リフレクターライン" level="h2" />
 			<div class="split__grid">
 				<div class="split__media" data-reveal>
 					<img src={`${base}/images/night.png`} alt="反射ラインが光る犬の写真（暗所・車のライト演出）" />
@@ -182,7 +179,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 		<!-- Section 11: Size Guide -->
 		<section class="section size-guide">
-			<p class="size-guide__title">Size Guide</p>
+			<h2 class="size-guide__title">Size Guide</h2>
 			<div class="split__grid split__grid--images">
 				<div data-reveal><img src={`${base}/images/size-guide-01.png`} alt="サイズ計測部位の図解（Back Length / Neck Girth / Chest Girth）" /></div>
 				<div data-reveal><img src={`${base}/images/size-guide-02.png`} alt="サイズ表（M/L/XL/XXL/3XL）" /></div>
@@ -278,7 +275,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		</section>
 
 		<!-- Section 12: 撥水加工素材（バッグ） -->
-		<section class="section split">
+		<section class="section split hassui-bg">
 			<SectionHeading title="撥水加工素材" level="h2" />
 			<div class="split__grid split__grid--stacked-media">
 				<div class="split__media split__media--stacked" data-reveal>
@@ -304,7 +301,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 		<!-- Section 14: リバーシブル訴求（両面ディテール） -->
 		<section class="section reversible">
-			<SectionHeading title="両面の表情を持つ" />
+			<SectionHeading title="両面の表情を持つ" level="h2" />
 			<div class="reversible__layout">
 				<div class="reversible__media reversible__media--1" data-reveal>
 					<img src={`${base}/images/bag-bg04.png`} alt="黒面のバッグ" />
@@ -323,31 +320,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 			<!-- Section 15: detailed information -->
 			<section class="section detailed-info">
-				<p class="detailed-info__title">detailed information</p>
+				<h2 class="detailed-info__title">detailed information</h2>
 				<div class="detailed-info__grid">
 					<div class="detailed-info__card" data-reveal>
-						<div class="detailed-info__icon"><Placeholder label="information-01" ratio="1 / 1" rounded /></div>
+						<span class="detailed-info__number">01</span>
 						<p class="detailed-info__card-title">LIMITED MADE IN JAPAN</p>
 						<p class="detailed-info__card-text">
 							私たちのこだわりは、大量生産をしないこと。日本の熟練した職人が、一針一針にクラフトマンシップを注ぎ込み、限定数のみを丁寧に仕立てます。それは、大量消費の時代に向けた、丁寧なものづくりと贅沢の形です。
 						</p>
 					</div>
 					<div class="detailed-info__card" data-reveal>
-						<div class="detailed-info__icon"><Placeholder label="information-02" ratio="1 / 1" rounded /></div>
+						<span class="detailed-info__number">02</span>
 						<p class="detailed-info__card-title">ARCHITECTURAL CUTTING</p>
 						<p class="detailed-info__card-text">
 							愛犬の身体のラインを美しく魅せる、立体的なカッティングを追求。ミリ単位で計算されたパターンは、窮屈さを感じにくく、心地よいフィット感を生み出します。
 						</p>
 					</div>
 					<div class="detailed-info__card" data-reveal>
-						<div class="detailed-info__icon"><Placeholder label="information-03" ratio="1 / 1" rounded /></div>
+						<span class="detailed-info__number">03</span>
 						<p class="detailed-info__card-title">MONOCHROME LINK</p>
 						<p class="detailed-info__card-text">
 							愛犬のウェアと完全に同質・同素材で仕立てられた、オーナー様のためのバッグ&小物シリーズを展開します。愛犬と響き合う、シックで一体感のあるラグジュアリーな「リンクスタイル」を叶えます。
 						</p>
 					</div>
 					<div class="detailed-info__card" data-reveal>
-						<div class="detailed-info__icon"><Placeholder label="information-04" ratio="1 / 1" rounded /></div>
+						<span class="detailed-info__number">04</span>
 						<p class="detailed-info__card-title">HIGH-FUNCTION MINIMALISM</p>
 						<p class="detailed-info__card-text">
 							普段着としても美しい佇まいを演出する撥水素材を採用。落ち着いたトーンの生地は、シーンを問わず大人の気品を漂わせます。
@@ -360,7 +357,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			<section class="section concept">
 				<div class="concept__media" data-reveal>
 					<img src={`${base}/images/concept.png`} alt="コート・バッグの製品ディテールを並べたフラットレイ写真" />
-					<p class="concept__label">concept</p>
+					<h2 class="concept__label">concept</h2>
 				</div>
 				<div class="concept__copy" data-reveal>
 					<p>
@@ -380,7 +377,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			<section class="section memories">
 				<div class="memories__media" data-reveal>
 					<img src={`${base}/images/memories.png`} alt="愛犬のコートを手描きしたスケッチ" />
-					<p class="memories__label">memories</p>
+					<h2 class="memories__label">memories</h2>
 				</div>
 				<div class="memories__copy" data-reveal>
 					<p class="memories__heading">「動物と人間を、ひとつに繋ぐデザイン」</p>
@@ -406,8 +403,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 							<li><a href="#" aria-label="Facebook"><img src={`${base}/images/icon-01.png`} alt="" /></a></li>
 							<li><a href="#" aria-label="X"><img src={`${base}/images/icon-02.png`} alt="" /></a></li>
 							<li><a href="#" aria-label="Instagram"><img src={`${base}/images/icon-03.png`} alt="" /></a></li>
-							<li><a href="#" aria-label="LinkedIn"><img src={`${base}/images/icon-04.png`} alt="" /></a></li>
-							<li><a href="#" aria-label="YouTube"><img src={`${base}/images/icon-05.png`} alt="" /></a></li>
 						</ul>
 					</div>
 				</div>
@@ -415,7 +410,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 			<!-- Section 19: news -->
 			<section class="section news">
-				<p class="news__title">news</p>
+				<h2 class="news__title">news</h2>
 				<div class="news__list">
 					<a class="news__item" href="#" data-reveal>
 						<div class="news__thumb"><img src={`${base}/images/news-04.png`} alt="サングラスとポーチのプロダクトショット" /></div>
@@ -461,25 +456,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	/* Section 01: hero */
+	/* モバイルは100svhだと縦に伸びすぎて動画が過剰にズームインされ内容が見えなくなるため、
+	   動画本来の比率（16:9）に合わせた高さにする。PCは100svhの全画面表示に戻す */
 	.hero {
 		position: relative;
 		width: 100%;
-		height: 100svh;
+		height: auto;
+		aspect-ratio: 16 / 9;
 		overflow: hidden;
 	}
 
+	/* 動画右下に焼き込みロゴがあるため、object-fit:coverでクロップされる際も
+	   右下だけは必ず見えるように、切り取りの基準点を右下に固定する */
 	.hero__media {
 		width: 100%;
 		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		padding: 32px;
-		text-align: center;
-		background: repeating-linear-gradient(135deg, #1a1a1c 0 10px, #202022 10px 20px);
-		color: var(--color-caption);
-		font-size: 11px;
-		letter-spacing: 0.04em;
+		display: block;
+		object-fit: cover;
+		object-position: bottom right;
 	}
 
 	.hero__controls {
@@ -610,7 +604,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	/* vw基準の高さにすることで、フルブリード幅（cutting）とセクション内padding幅（split)が異なっても
-	   立体裁断・撥水加工素材・夜行反射機能の3画像の高さがSPで揃う */
+	   立体裁断・撥水加工素材・リフレクターラインの3画像の高さがSPで揃う */
 	.cutting__media img {
 		width: 100%;
 		height: 120vw;
@@ -636,14 +630,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
 	}
 
+	/* 視認性を上げるため、テキストの背後に左上から右へ抜けるグラデーションパネルを敷く */
 	.interlude__copy {
 		position: absolute;
-		top: 24px;
+		top: 48px;
 		left: 20px;
-		right: 20px;
+		max-width: 280px;
 		margin: 0;
+		padding: 16px 20px;
+		border-radius: 15px;
+		background: linear-gradient(to right, rgba(33, 33, 46, 0.5) 0%, rgba(36, 62, 57, 0) 100%);
 		color: var(--color-body);
 		text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+	}
+
+	/* 撥水加工素材（コート/バッグ共通）。PCでは.sectionのmax-width:1200pxに収まってしまうため、
+	   Size Guideと同様にbox-shadowで背景色だけ画面幅いっぱいに広げる。
+	   clip-pathで上下方向のシャドウの広がりを打ち消し、隣接セクションに色が漏れないようにする */
+	.hassui-bg {
+		background: #1b232a;
+		box-shadow: 0 0 0 100vmax #1b232a;
+		clip-path: inset(0 -100vmax);
 	}
 
 	/* split (text + image) blocks */
@@ -686,11 +693,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		color: var(--color-body);
 	}
 
-	/* 撥水加工素材（バッグ）：写真2枚を縦に積んで1つの画像カラムにする */
+	/* 撥水加工素材（バッグ）：写真2枚を縦に積んで1つの画像カラムにする（余白なしで隣接） */
 	.split__media--stacked {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
+		gap: 0;
 	}
 
 	.split__media--stacked img {
@@ -726,16 +733,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		color: var(--color-caption);
 		font-size: 14px;
 		letter-spacing: 0.04em;
-		text-align: left;
+		text-align: center;
 	}
 
 	/* Section 10: 職人の手元バナー + 日本製・限定生産 */
+	.craft__media {
+		position: relative;
+	}
+
 	.craft__media img {
 		width: 100%;
 		aspect-ratio: 3840 / 950;
 		object-fit: cover;
 		display: block;
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
+	}
+
+	/* 落ち着いた雰囲気にするため、写真の上に色付きオーバーレイを重ねる（画像自体は変更しない） */
+	.craft__media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: rgba(27, 35, 42, 0.6);
 	}
 
 	.craft__copy {
@@ -758,6 +777,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	/* Section 11: Size Guide */
+	/* .size-guideはPCで.section同様max-width:1200pxに制限されるため、box-shadowで背景色だけを画面幅いっぱいに広げる。
+	   clip-pathで上下方向のシャドウの広がりを打ち消し、隣接セクションに色が漏れないようにする */
+	.size-guide {
+		background: #191b24;
+		box-shadow: 0 0 0 100vmax #191b24;
+		clip-path: inset(0 -100vmax);
+	}
+
 	.size-guide__title {
 		margin: 0 0 24px;
 		color: var(--color-heading);
@@ -827,10 +854,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	/* product detail (bag / coat) */
+	/* 商品詳細セクションは見出し下の罫線を表示しない */
+	.coat-product :global(.section-heading__rule),
+	.bag-product :global(.section-heading__rule) {
+		display: none;
+	}
+
+	/* バッグ側の見出しは右寄せ */
+	.bag-product :global(.section-heading) {
+		text-align: right;
+	}
+
 	.product-detail__body {
 		display: flex;
 		flex-direction: column;
 		gap: 32px;
+	}
+
+	/* Purchaseボタンを右下に浮かせて配置するための基準。
+	   ボタン（120px）が価格・スウォッチ等の上の要素と被らないよう、下側に余白を確保する */
+	.coat-product__info,
+	.bag-product__spec {
+		position: relative;
+		padding-bottom: 140px;
 	}
 
 	.coat-product__info .section__copy {
@@ -853,7 +899,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		color: var(--color-caption);
 		font-size: 11px;
 		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		text-transform: lowercase;
 	}
 
 	.spec-list__row dd {
@@ -867,7 +913,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		color: var(--color-caption);
 		font-size: 11px;
 		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		text-transform: lowercase;
 	}
 
 	.swatch-row {
@@ -907,7 +953,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	.price {
-		margin: 0 0 24px;
+		margin: 8px 0 24px;
 		color: var(--color-heading);
 		font-size: 20px;
 		font-weight: 500;
@@ -921,9 +967,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	.purchase-btn {
-		width: 96px;
-		height: 96px;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 120px;
+		height: 120px;
 		line-height: 1.5;
+		text-align: left;
+		background: rgba(76, 66, 90, 0.8);
 	}
 
 	.carousel {
@@ -978,12 +1029,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 	.thumb-grid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 		gap: 8px;
-	}
-
-	.thumb-grid--cols-3 {
-		grid-template-columns: repeat(3, 1fr);
 	}
 
 	.thumb-grid__item {
@@ -1034,16 +1081,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 	.detailed-info__card {
 		position: relative;
-		border: 1px solid var(--color-divider);
-		border-radius: 8px;
+		background: #07080a;
+		border-radius: 10px;
 		padding: 32px 20px 20px;
 	}
 
-	.detailed-info__icon {
+	.detailed-info__number {
 		position: absolute;
 		top: -16px;
 		left: 20px;
 		width: 48px;
+		height: 48px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+		background: #494949;
+		color: var(--color-heading);
+		font-family: 'Roboto Condensed', var(--font-sans);
+		font-weight: 300;
+		font-size: 20px;
 	}
 
 	.detailed-info__card-title {
@@ -1088,6 +1145,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
 	}
 
+	/* 落ち着いた雰囲気にするため、写真の上に色付きオーバーレイを重ねる（画像自体は変更しない） */
+	.concept__media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: rgba(27, 35, 42, 0.6);
+		z-index: 1;
+	}
+
 	.concept__label {
 		position: absolute;
 		top: 20px;
@@ -1095,6 +1161,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		margin: 0;
 		color: var(--color-heading);
 		font-size: 20px;
+		font-weight: 400;
+		z-index: 2;
 	}
 
 	.concept__copy {
@@ -1133,6 +1201,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
 	}
 
+	/* 落ち着いた雰囲気にするため、写真の上に色付きオーバーレイを重ねる（画像自体は変更しない） */
+	.memories__media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: rgba(27, 35, 42, 0.6);
+		z-index: 1;
+	}
+
 	.memories__label {
 		position: absolute;
 		top: 20px;
@@ -1140,6 +1217,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		margin: 0;
 		color: var(--color-heading);
 		font-size: 20px;
+		font-weight: 400;
+		z-index: 2;
 	}
 
 	/* デザインカンプ実測：テキストは列の上部ではなく下部寄りに配置される（列高の約38%が上部の余白） */
@@ -1287,7 +1366,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	@media (min-width: 768px) {
-		/* コンテンツ最大幅（design.md 6.1）: 一般的なグリッド幅として1200pxに調整 */
+		/* PCでは画面いっぱいのヒーロー表示に戻す */
+		.hero {
+			height: 100svh;
+			aspect-ratio: auto;
+		}
+
+		/* コンテンツ最大幅（design.md 7.1）: 一般的なグリッド幅として1200pxに調整 */
 		.section {
 			max-width: 1200px;
 			margin: 0 auto;
@@ -1296,8 +1381,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 		/* ヒーロー動画・背景写真などのフルブリード要素は画面幅いっぱい（100vw）のまま制限しない */
 		.news-bar__text,
-		.intro__copy,
-		.interlude__copy {
+		.intro__copy {
 			max-width: 1200px;
 			margin-left: auto;
 			margin-right: auto;
@@ -1305,8 +1389,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			padding-right: 40px;
 		}
 
-		.intro__copy,
-		.interlude__copy {
+		.intro__copy {
 			left: 0;
 			right: 0;
 		}
@@ -1315,8 +1398,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			font-size: 22px;
 		}
 
+		/* interludeはコンテンツ幅の左端に揃えたカード状のグラデーションパネルとして表示 */
 		.interlude__copy {
-			top: 40px;
+			top: 64px;
+			left: max(40px, calc((100% - 1200px) / 2 + 40px));
+			max-width: 480px;
+			padding: 24px 32px;
 			font-size: 22px;
 			line-height: 1.7;
 		}
@@ -1335,8 +1422,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 		.cutting :global(.section-heading) {
 			max-width: 1200px;
-			margin: 0 auto;
+			margin: 0 auto 24px;
 			padding: 0 40px;
+		}
+
+		/* デザインカンプ実測：罫線は左端はコンテンツ幅で止まるが、右端は画面の真の端まで伸びる。
+		   width:100%指定があるため、negative marginでは伸びない → widthそのものを拡張する */
+		.cutting :global(.section-heading__rule) {
+			width: calc(100% + max(40px, (100vw - 1200px) / 2 + 40px));
 		}
 
 		.cutting__copy {
@@ -1409,7 +1502,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			text-align: right;
 		}
 
-		/* 夜行反射機能はデザインカンプ通りテキストが左・写真が右（他のsplitは写真が左） */
+		/* リフレクターラインはデザインカンプ通りテキストが左・写真が右（他のsplitは写真が左） */
 		.split--reverse .split__media {
 			order: 2;
 		}
@@ -1424,11 +1517,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		}
 
 		.material-detail__icons {
-			gap: 24px;
+			gap: 40px;
 		}
 
 		.material-detail__icon {
-			width: 150px;
+			width: 165px;
+		}
+
+		/* 他のh2見出しと揃えて28pxに */
+		.size-guide__title {
+			font-size: 28px;
 		}
 
 		/* デザインカンプ実測：写真同士は重ならず隣接（48%/52%で継ぎ目が一致）、
@@ -1572,9 +1670,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			padding: 40px 32px 32px;
 		}
 
-		.detailed-info__icon {
+		.detailed-info__number {
 			width: 56px;
+			height: 56px;
 			top: -20px;
+			left: 32px;
+			font-size: 24px;
 		}
 
 		.detailed-info__card-title {
@@ -1589,10 +1690,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		   デザインカンプ実測：写真は約27%、テキストが約73%。
 		   concept＝写真(左)→テキスト(右)、memories＝テキスト(左)→写真(右)で左右が逆。
 		   HTMLはモバイル同様「画像→テキスト」の順で書いているため、memoriesのみPCでorderを入れ替える。 */
+		/* 写真・パネル背景は画面幅いっぱいに広げる（.sectionのmax-width:1200px・左右paddingを打ち消す） */
 		.concept,
 		.memories {
 			flex-direction: row;
 			align-items: stretch;
+			max-width: none;
+			padding-left: 0;
+			padding-right: 0;
 		}
 
 		.concept {
@@ -1614,10 +1719,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			aspect-ratio: auto;
 		}
 
+		/* パネル背景は画面幅いっぱいのままだが、テキスト自体は他セクションと同じコンテンツ幅の基準に揃える。
+		   写真側は60pxの余白のみ、外側（画面端）は標準のコンテンツ端に合わせる */
 		.concept__copy,
 		.memories__copy {
 			flex: 1 1 0;
-			padding: 80px 60px;
+			padding-top: 80px;
+			padding-bottom: 80px;
+		}
+
+		.concept__copy {
+			padding-left: 60px;
+			padding-right: max(40px, calc((100vw - 1200px) / 2 + 40px));
+		}
+
+		.memories__copy {
+			padding-right: 60px;
+			padding-left: max(40px, calc((100vw - 1200px) / 2 + 40px));
 		}
 
 		.memories__media {
@@ -1634,6 +1752,11 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		}
 
 		/* Section 19: news */
+		/* 他のh2見出しと揃えて28pxに */
+		.news__title {
+			font-size: 28px;
+		}
+
 		.news__item {
 			gap: 32px;
 			padding: 28px 0;
@@ -1655,12 +1778,59 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 </style>
 
 <script>
+	const heroVideo = document.querySelector('.hero__media');
 	const heroPlay = document.getElementById('hero-play');
-	if (heroPlay) {
-		heroPlay.addEventListener('click', () => {
-			const isPlaying = heroPlay.dataset.playing === 'true';
-			heroPlay.textContent = isPlaying ? '▶' : '❚❚';
-			heroPlay.dataset.playing = isPlaying ? 'false' : 'true';
+	const heroSeek = document.getElementById('hero-seek');
+	const heroSeekFill = document.getElementById('hero-seek-fill');
+	const heroTime = document.getElementById('hero-time');
+	const heroMute = document.getElementById('hero-mute');
+	const heroFullscreen = document.getElementById('hero-fullscreen');
+
+	if (heroVideo instanceof HTMLVideoElement) {
+		const formatTime = (seconds) => {
+			if (!Number.isFinite(seconds)) return '00:00';
+			const m = Math.floor(seconds / 60);
+			const s = Math.floor(seconds % 60);
+			return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+		};
+
+		heroPlay?.addEventListener('click', () => {
+			if (heroVideo.paused) {
+				heroVideo.play();
+			} else {
+				heroVideo.pause();
+			}
+		});
+
+		heroVideo.addEventListener('play', () => {
+			if (heroPlay) heroPlay.textContent = '❚❚';
+		});
+
+		heroVideo.addEventListener('pause', () => {
+			if (heroPlay) heroPlay.textContent = '▶';
+		});
+
+		heroVideo.addEventListener('timeupdate', () => {
+			const pct = heroVideo.duration ? (heroVideo.currentTime / heroVideo.duration) * 100 : 0;
+			if (heroSeekFill) heroSeekFill.style.width = `${pct}%`;
+			if (heroTime) heroTime.textContent = `${formatTime(heroVideo.currentTime)} / ${formatTime(heroVideo.duration)}`;
+		});
+
+		heroSeek?.addEventListener('click', (event) => {
+			const rect = heroSeek.getBoundingClientRect();
+			const ratio = (event.clientX - rect.left) / rect.width;
+			if (heroVideo.duration) {
+				heroVideo.currentTime = ratio * heroVideo.duration;
+			}
+		});
+
+		heroMute?.addEventListener('click', () => {
+			heroVideo.muted = !heroVideo.muted;
+			heroMute.textContent = heroVideo.muted ? '♪' : '🔊';
+		});
+
+		heroFullscreen?.addEventListener('click', () => {
+			heroVideo.requestFullscreen?.();
 		});
 	}
 

@@ -4,7 +4,7 @@ const isH2 = level === 'h2' || Boolean(subtitle);
 ---
 
 <div class="section-heading" data-reveal>
-	<p class="section-heading__title" class:list={{ 'section-heading__title--h2': isH2 }}>{title}</p>
+	<h2 class="section-heading__title" class:list={{ 'section-heading__title--h2': isH2 }}>{title}</h2>
 	{subtitle && <p class="section-heading__subtitle">{subtitle}</p>}
 	<span class="section-heading__rule"></span>
 </div>
