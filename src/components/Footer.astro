@@ -69,7 +69,7 @@ const links = [
 		letter-spacing: 0.03em;
 	}
 
-	/* 常に画面右下に固定表示 */
+	/* 画面右下に固定表示。ページ最上部では隠し、少しスクロールしてから表示する */
 	.back-to-top {
 		position: fixed;
 		right: 16px;
@@ -84,7 +84,16 @@ const links = [
 		font-size: 11px;
 		line-height: 1.4;
 		letter-spacing: 0.02em;
-		transition: transform 0.2s ease;
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			opacity 0.3s ease,
+			transform 0.2s ease;
+	}
+
+	.back-to-top.is-visible {
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	.back-to-top:hover,
@@ -118,6 +127,14 @@ const links = [
 
 <script>
 	const backToTop = document.getElementById('back-to-top');
+	const SHOW_AFTER_SCROLL_Y = 300;
+
+	const toggleBackToTop = () => {
+		backToTop?.classList.toggle('is-visible', window.scrollY > SHOW_AFTER_SCROLL_Y);
+	};
+
+	toggleBackToTop();
+	window.addEventListener('scroll', toggleBackToTop, { passive: true });
 
 	backToTop?.addEventListener('click', () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });

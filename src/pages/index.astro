@@ -185,16 +185,23 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 				<div data-reveal><img src={`${base}/images/size-guide-02.png`} alt="サイズ表（M/L/XL/XXL/3XL）" /></div>
 			</div>
 			<p class="note">
-				※胸が深く細身の犬種（サイトハウンド等）は、胸周りのサイズを基準にお選びいただくことをおすすめします。<br />
-				※他のサイズをお求めの方はお問い合わせください。
+				※胸が深く細身の犬種（サイトハウンド等）は、胸周りのサイズを基準にお選びいただくことをおすすめします。　<br />
+				※他のサイズをお求めの方はお問い合わせください。<br />
+				※製造工程の特性上、商品ごとに多少の誤差（1 ~ 3 cm程度）が生じる場合がございます。予めご了承ください。
 			</p>
 		</section>
 
 		<!-- Section 09: メンズウェア（フーディー）紹介 -->
 		<section class="menswear">
 			<div class="menswear__grid">
-				<img src={`${base}/images/bag-bg01.png`} alt="フーディー着用モデル（都市）" />
-				<img src={`${base}/images/bag-bg02.png`} alt="フーディー着用モデル（森）" />
+				<picture>
+					<source media="(min-width: 768px)" srcset={`${base}/images/bag-bg01.png`} />
+					<img src={`${base}/images/bag-bg_sp01.png`} alt="フーディー着用モデル（都市）" />
+				</picture>
+				<picture>
+					<source media="(min-width: 768px)" srcset={`${base}/images/bag-bg02.png`} />
+					<img src={`${base}/images/bag-bg_sp02.png`} alt="フーディー着用モデル（森）" />
+				</picture>
 				<div class="menswear__copy" data-reveal>
 					両手を自由にする、革新のカラビナフック。<br />DOGウェアと美しく同調する、撥水加工リバーシブル・ハンズフリーバッグ。
 				</div>
@@ -289,7 +296,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		</section>
 
 		<!-- Section 13: ショルダーストラップ仕様 -->
-		<section class="cutting">
+		<section class="cutting cutting--gap-top">
 			<SectionHeading title="ショルダーストラップ仕様" level="h2" />
 			<div class="cutting__media">
 				<img src={`${base}/images/strap-bg.png`} alt="バッグのカラビナフックとショルダーストラップのクローズアップ" />
@@ -319,7 +326,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			</section>
 
 			<!-- Section 15: detailed information -->
-			<section class="section detailed-info">
+			<section class="section detailed-info hassui-bg">
 				<h2 class="detailed-info__title">detailed information</h2>
 				<div class="detailed-info__grid">
 					<div class="detailed-info__card" data-reveal>
@@ -401,8 +408,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 						<p class="sns__label">Follow us</p>
 						<ul class="sns__icons">
 							<li><a href="#" aria-label="Facebook"><img src={`${base}/images/icon-01.png`} alt="" /></a></li>
-							<li><a href="#" aria-label="X"><img src={`${base}/images/icon-02.png`} alt="" /></a></li>
-							<li><a href="#" aria-label="Instagram"><img src={`${base}/images/icon-03.png`} alt="" /></a></li>
+							<li><a href="#" aria-label="Instagram"><img src={`${base}/images/icon-02.png`} alt="" /></a></li>
+							<li><a href="#" aria-label="TikTok"><img src={`${base}/images/icon-03.png`} alt="" /></a></li>
 						</ul>
 					</div>
 				</div>
@@ -456,24 +463,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	/* Section 01: hero */
-	/* モバイルは100svhだと縦に伸びすぎて動画が過剰にズームインされ内容が見えなくなるため、
-	   動画本来の比率（16:9）に合わせた高さにする。PCは100svhの全画面表示に戻す */
+	/* モバイルは元動画が16:9の横長のため、そのままの比率だと被写体（人物・犬）の上下に
+	   余白ができてしまう。4:5の縦長コンテナ+object-fit:coverで左右をトリミングし、
+	   被写体を画面いっぱいに見せる。PCは100svhの全画面表示に戻す */
 	.hero {
 		position: relative;
 		width: 100%;
 		height: auto;
-		aspect-ratio: 16 / 9;
+		aspect-ratio: 4 / 5;
 		overflow: hidden;
 	}
 
-	/* 動画右下に焼き込みロゴがあるため、object-fit:coverでクロップされる際も
-	   右下だけは必ず見えるように、切り取りの基準点を右下に固定する */
+	/* 左右がトリミングされる分、被写体が画面中央からやや左寄りに収まるよう調整
+	   （動画ループ全体で被写体の位置が変わるため、あくまで概算値。要目視調整） */
 	.hero__media {
 		width: 100%;
 		height: 100%;
 		display: block;
 		object-fit: cover;
-		object-position: bottom right;
+		object-position: 42% center;
 	}
 
 	.hero__controls {
@@ -574,7 +582,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	.intro__title {
 		margin: 0 0 12px;
 		color: var(--color-heading);
-		font-size: 36px;
+		font-size: clamp(22px, 1.6vw + 1rem, 36px);
 		font-weight: 300;
 		letter-spacing: 0.15em;
 	}
@@ -592,6 +600,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	   写真が縦に十分な高さを持つPC幅でのみ画像上へのオーバーレイに切り替える。 */
 	.cutting {
 		padding: 0 0 96px;
+	}
+
+	/* ショルダーストラップ仕様は直前が撥水加工素材（hassui-bg、標準の.sectionパディングのみ）で
+	   他の.cutting（立体裁断・着用シーン）ほど余白が確保されないため、標準の.section上パディングを補う */
+	.cutting--gap-top {
+		padding-top: 64px;
 	}
 
 	/* 写真はフルブリードのままだが、見出しは他の.sectionと同じコンテンツ幅に収める */
@@ -788,7 +802,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	.size-guide__title {
 		margin: 0 0 24px;
 		color: var(--color-heading);
-		font-size: 24px;
+		font-size: clamp(22px, 2vw + 1rem, 28px);
 		font-weight: 400;
 		letter-spacing: 0.04em;
 	}
@@ -822,10 +836,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		flex-direction: column;
 	}
 
+	/* pictureはflexアイテムの箱として扱わせず、中のimgをそのままflexアイテムにする */
+	.menswear__grid picture {
+		display: contents;
+	}
+
+	/* SP専用画像（bag-bg_sp01/02）は元画像の比率が異なるため、PCとはaspect-ratioを分ける */
 	.menswear__grid img {
 		width: 100%;
 		min-width: 0;
-		aspect-ratio: 1920 / 2012;
+		aspect-ratio: 750 / 1020;
 		object-fit: cover;
 		display: block;
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
@@ -848,7 +868,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		color: var(--color-heading);
 		font-size: 14px;
 		line-height: 1.8;
-		background: rgba(180, 180, 185, 0.35);
+		background: rgba(65, 75, 82, 0.52);
 		backdrop-filter: blur(6px);
 		-webkit-backdrop-filter: blur(6px);
 	}
@@ -934,7 +954,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		display: block;
 		flex: 1 1 auto;
 		max-width: 220px;
-		margin-bottom: 16px;
 		height: 16px;
 		border-radius: 2px;
 		border: 1px solid var(--color-divider);
@@ -1061,12 +1080,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 	/* Size Guide直下の注意書きは読みやすさのため14pxにする（バッグの注記は10pxのまま） */
 	.size-guide .note {
+		color: #ffffff;
 		font-size: 14px;
 	}
 
 	/* Section 15: detailed information */
 	.detailed-info__title {
-		margin: 0 0 24px;
+		margin: 0 0 40px;
 		color: var(--color-heading);
 		font-size: 20px;
 		font-weight: 400;
@@ -1076,7 +1096,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	.detailed-info__grid {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: 30px;
 	}
 
 	.detailed-info__card {
@@ -1122,7 +1142,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	.concept {
 		display: flex;
 		flex-direction: column;
+		padding-top: 0;
 		padding-bottom: 0;
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	/* 写真列とテキスト列を隙間なく揃えるため、両者ともリフトなし（フェードのみ）にしてズレの余地をなくす */
@@ -1167,7 +1190,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 	.concept__copy {
 		padding: 40px 20px;
-		background: var(--color-newsbar-bg);
+		background: #121517;
 	}
 
 	.concept__copy p {
@@ -1187,6 +1210,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		display: flex;
 		flex-direction: column;
 		padding-top: 0;
+		padding-bottom: 0;
+		padding-left: 0;
+		padding-right: 0;
 	}
 
 	.memories__media {
@@ -1372,6 +1398,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			aspect-ratio: auto;
 		}
 
+		/* コントロールバーは他セクションと同じコンテンツ幅（1200px）に収める */
+		.hero__controls {
+			left: max(40px, calc((100% - 1200px) / 2 + 40px));
+			right: max(40px, calc((100% - 1200px) / 2 + 40px));
+		}
+
 		/* コンテンツ最大幅（design.md 7.1）: 一般的なグリッド幅として1200pxに調整 */
 		.section {
 			max-width: 1200px;
@@ -1408,9 +1440,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			line-height: 1.7;
 		}
 
-		/* 円はコンテンツ幅ではなく写真の継ぎ目中心のまま、PCでは少し大きくする */
+		/* 円はコンテンツ幅ではなく写真の継ぎ目中心のまま、PCでは330px固定サイズにする */
 		.menswear__copy {
-			width: min(420px, 60%);
+			width: 330px;
 			font-size: 22px;
 		}
 
@@ -1418,6 +1450,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		   デザインカンプ通り、テキストは画像上部寄り・半透明パネル・コンテンツ幅の約半分に収める。 */
 		.cutting {
 			padding: 0;
+		}
+
+		.cutting--gap-top {
+			padding-top: 96px;
 		}
 
 		.cutting :global(.section-heading) {
@@ -1442,6 +1478,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			background: #0303051c;
 			font-size: 22px;
 			line-height: 1.7;
+		}
+
+		/* ショルダーストラップ仕様：デザインカンプ実測ではテキストが画像上部12%ではなく
+		   約33%の位置（上寄り中央）にあるため、このセクションのみ位置を補正する */
+		.cutting--gap-top .cutting__copy {
+			top: 33%;
 		}
 
 		/* コンテンツ幅の右端（立体裁断のleftと対になる基準）に揃える */
@@ -1524,9 +1566,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			width: 165px;
 		}
 
-		/* 他のh2見出しと揃えて28pxに */
-		.size-guide__title {
-			font-size: 28px;
+		/* デザインカンプ実測：見出しは右揃え（bag-productと同様） */
+		.reversible :global(.section-heading) {
+			text-align: right;
 		}
 
 		/* デザインカンプ実測：写真同士は重ならず隣接（48%/52%で継ぎ目が一致）、
@@ -1602,6 +1644,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		.menswear__grid img {
 			flex: 1 1 0;
 			width: auto;
+			aspect-ratio: 1920 / 2012;
 		}
 
 		.product-detail__body {
@@ -1658,15 +1701,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		}
 
 		/* Section 15: detailed information */
+		/* flexboxのflex-wrapだと2行目の行間ぶん(24px)コンテナの高さが不足し、
+		   セクション下の余白が意図より狭くなる不具合があったためgridに変更 */
 		.detailed-info__grid {
-			flex-direction: row;
-			flex-wrap: wrap;
-			gap: 24px;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			column-gap: 24px;
+			row-gap: 40px;
 		}
 
 		.detailed-info__card {
-			flex: 1 1 calc(50% - 12px);
-			min-width: 320px;
 			padding: 40px 32px 32px;
 		}
 
@@ -1701,11 +1745,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		}
 
 		.concept {
+			padding-top: 0;
 			padding-bottom: 0;
 		}
 
 		.memories {
 			padding-top: 0;
+			padding-bottom: 0;
 		}
 
 		.concept__media,

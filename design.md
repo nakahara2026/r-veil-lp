@@ -12,7 +12,7 @@
 | トーン | ダーク・モノトーン・タクティカル・ミニマル・高級感 |
 | 想定デバイス | スマートフォン優先（1カラム、幅 375〜430px 相当で設計。PC版は中央寄せ＋余白拡張で流用） |
 | 実装 | Astro（`src/pages/index.astro`にセクション本体、`src/layouts/BaseLayout.astro`＋`src/components/Header.astro`・`Footer.astro`で全体を包む） |
-| 公開 | GitHub Pages（`https://nakahara2026.github.io/r-veil-lp/`）。`main`へのpushでGitHub Actionsが自動ビルド・公開。**⚠️ 直近の大量の修正は未commit/未push（詳細は「10. 次セッションTODO」参照）** |
+| 公開 | GitHub Pages（`https://nakahara2026.github.io/r-veil-lp/`）。`main`へのpushでGitHub Actionsが自動ビルド・公開。**⚠️ 直近の細部修正（SP版レイアウト調整一式）は未commit/未push（詳細は「10. 次セッションTODO」参照）** |
 
 ---
 
@@ -72,7 +72,9 @@
 |---|---|---|---|
 | ベース背景 | Almost Black | `#030305` | セクション間の余白・本文背景・フッター最下部の帯 |
 | ニュースバー/パネル背景 | Slate Navy | `#1B2326` | ヘッダー直下の告知バー、フッター本体 |
-| concept/memoriesパネル背景 | Slate Navy（濃） | `#1B232A` | concept/memoriesのテキストパネル、撥水加工素材（コート・バッグ両方）の背景 |
+| 撥水加工素材パネル背景 / detailed information背景 | Slate Navy（濃） | `#1B232A` | 撥水加工素材（コート・バッグ両方）・detailed informationセクションの背景（`.hassui-bg`） |
+| conceptテキストパネル背景 | Almost Black（濃） | `#121517` | conceptセクションのテキストパネルのみ（top.png実測。memoriesは引き続き`#1B2326`＝ニュースバーと共通） |
+| メンズウェア紹介の円背景 | Slate Gray 52%透過 | `rgba(65, 75, 82, 0.52)`（`#414B52`の52%） | `.menswear__copy`（フーディー紹介の合成写真に重なる円形コピー）専用 |
 | Size Guide背景 | Dark Navy | `#191B24` | Size Guideセクションの背景 |
 | 写真オーバーレイ（トーン統一用） | Slate Navy 60%透過 | `rgba(27, 35, 42, 0.6)` | concept写真・memories写真・craft（職人の手元）バナーに`::after`で重ねる色オーバーレイ |
 | アクセント（Back To Top） | Muted Mauve Gray | `#736C7E` | 「Back To Top」ボタン |
@@ -88,9 +90,9 @@
 
 | 要素 | ウェイト | サイズ（モバイル / PC） | 字間 |
 |---|---|---|---|
-| ロゴ「R VEIL」（Header） | — | 画像（`logo.png`）、高さ65px固定・幅auto | — |
-| コレクション名「UNISON」（`<p>`、見出しタグではない） | Light | 36px | 広め（letter-spacing: 0.15em） |
-| 商品見出し・その他全セクション見出し（`<h2>`。`SectionHeading`コンポーネント、または直書きの`<h2>`） | Regular | 20px / **28px** | 標準、下線罫を伴う（一部例外あり、4章参照） |
+| ロゴ「R VEIL」（Header） | — | 画像（`logo.png`）、高さ**40px（SP）/ 65px（PC、768px〜）**・幅auto | — |
+| コレクション名「UNISON」（`<p>`、見出しタグではない） | Light | `clamp(22px, 1.6vw + 1rem, 36px)`（SP実測22px／PC実測36px） | 広め（letter-spacing: 0.15em） |
+| 商品見出し・その他全セクション見出し（`<h2>`。`SectionHeading`コンポーネント、または直書きの`<h2>`） | Regular | `clamp(22px, 2vw + 1rem, 28px)`（SP実測22〜23.5px／PC実測28px） | 標準、下線罫を伴う（一部例外あり、4章参照） |
 | 背景写真オーバーレイの本文コピー（UNISON/interlude/立体裁断等の`.cutting`系） | Regular | 16px / **22px** | 行間 1.7〜1.8 |
 | 通常の本文コピー（`.section__copy`, `.split__copy`等） | Regular | 16px（共通） | 行間 1.8 |
 | 価格 | Medium | 20px（共通） | 標準 |
@@ -100,6 +102,8 @@
 > **重要な決定事項1**：写真に重ねるオーバーレイ本文（UNISON・ビジュアルインターリュード・立体裁断など）は、モバイル16px/PC22pxを既定値とする。
 >
 > **重要な決定事項2（h2タグ化）**：`SectionHeading.astro`は当初`<p>`タグに見た目だけh2/h3相当のCSSを当てているだけで、実際のセマンティックな見出しタグを使っていなかった。**`<h2>`タグを実際に出力するよう修正済み**。同様に、以前は`<p>`だったSize Guide・detailed information・concept/memoriesのラベル（"concept"/"memories"）・newsの各タイトルも全て`<h2>`に変更し、フォントサイズもPCで28pxに統一した。ページ全体のh1は**ヘッダーロゴのみ**（`<h1><a><img></a></h1>`）で、他の見出しは全てh2（h1の重複なし）。
+>
+> **重要な決定事項3（h2のSPサイズをclamp化）**：`.section-heading__title--h2`（商品見出し）・`.size-guide__title`が固定28px（メディアクエリなしで常時28px）だったため、SP幅で見出しが大きすぎる見た目になっていた。`BaseLayout.astro`のグローバルCSSに`h2 { font-size: clamp(22px, 2vw + 1rem, 28px); }`を基準として追加した上で、上記2箇所には同じclamp値を個別クラスとしても明示指定（クラス指定がグローバルh2ルールより優先されるため）。「UNISON」（`.intro__title`、pタグ）だけは元々36px固定という別基準だったため、`clamp(22px, 1.6vw + 1rem, 36px)`という専用の係数にして、SPは他の見出しと揃えつつPCでは36pxを維持している。
 
 ### 3.3 レイアウト・グリッド
 
@@ -126,11 +130,11 @@
 
 | 要素 | 挙動 |
 |---|---|
-| ヒーロー動画 | **実装済み**。`hero.mp4`（1920×1080, 16:9）を`<video autoplay muted loop playsinline>`で自動再生。下部のカスタムUI（再生/一時停止・シークバー・再生時間・音量ミュート切替・フルスクリーン）は全て実際の`<video>`要素と連動して動作する。モバイルは`height: auto; aspect-ratio: 16/9;`（`100svh`だと縦に伸びすぎて過剰クロップされるため）、PCのみ`height: 100svh`に戻す。動画右下に焼き込みロゴがあるため`object-position: bottom right`でクロップ時も右下が必ず見えるようにしている |
+| ヒーロー動画 | **実装済み**。`hero.mp4`（1920×1080, 16:9）を`<video autoplay muted loop playsinline>`で自動再生。下部のカスタムUI（再生/一時停止・シークバー・再生時間・音量ミュート切替・フルスクリーン）は全て実際の`<video>`要素と連動して動作する。**SPは`aspect-ratio: 4/5`の縦長コンテナ＋`object-fit: cover; object-position: 42% center;`で左右をトリミングし、被写体（人物・犬）が画面いっぱいに収まるようにしている**（16:9のまま表示すると被写体の上下に余白ができてしまうため。`42%`は動画ループ中の複数タイムスタンプを目視確認した概算値で、被写体の位置によっては要再調整）。PCは`height: 100svh; aspect-ratio: auto;`で全画面表示に戻す（クロップなし） |
 | ニュースバー | 横固定の告知帯、リンク付き（`詳細はこちら >>`、`#bag`へのアンカー） |
 | 商品画像ギャラリー | ドットインジケーター＋サムネイルグリッド（**コート・バッグとも5列に統一**）付きカルーセル。4秒間隔で自動ループ再生。ドット/サムネイルをクリックすると即座にそのスライドへ移動し、自動再生タイマーをリスタートする |
 | Purchaseボタン | コート・バッグ商品詳細それぞれのテキスト列の**右下に絶対配置**（`position:absolute; right:0; bottom:0;`）、120×120px、背景`rgba(76,66,90,0.8)`、テキストは左寄せ。上の要素（価格・スウォッチ）と被らないよう、親コンテナに`padding-bottom:140px`を確保 |
-| Back to Top | **常に画面右下に固定表示**（`position:fixed`、スクロール位置に関係なく常時表示）。枠線なし（`border:none`） |
+| Back to Top | 画面右下に固定表示（`position:fixed`）。枠線なし（`border:none`）。**ページ最上部（スクロール量300px以下）では非表示**（`opacity:0; pointer-events:none;`）にし、`window.scrollY > 300`でJSが`.is-visible`クラスを付けフェードイン表示する（`Footer.astro`のscriptで制御） |
 | スクロール演出 | `data-reveal`属性を付けた要素はスクロールで画面に入ると、フェードイン＋わずかな上方向スライドで表示される（`IntersectionObserver`, threshold 0.15）。**画像列とテキスト列が隣接して並ぶセクション（concept/memories）では、両方に`data-reveal`を付けたうえで`transform: none`にし、リフト演出を打ち消してフェードのみにする**（片方だけ・リフト付きだと、アニメーション中に上端がズレて「ガタつき」に見えるため） |
 
 ---
@@ -140,10 +144,12 @@
 > セクション番号は`index.astro`内の実装順。以下は初期実装からの**主な変更点のみ**を記載（変更のない詳細は簡潔に留める。過去の全文コピーはgit履歴 or 旧design.mdを参照）。
 
 ### Header（固定）
-- ロゴは**画像**（`logo.png`）。`<h1><a href={base+"/"}><img src="logo.png" height:65px></a></h1>`。ページ内で唯一のh1
+- ロゴは**画像**（`logo.png`）。`<h1><a href={base+"/"}><img src="logo.png"></a></h1>`。ページ内で唯一のh1
+- ロゴ高さは**SP 40px / PC 65px**（4章参照。以前はPCと同じ65px固定でSPでは画面幅に対して大きすぎた）
 
 ### Section 01 — ヒーロー（動画）
 - `hero.mp4`を実装済み（3.4参照）。テキストプレースホルダーは撤去済み
+- **SPは4:5クロップ**（3.4参照）。被写体が画面いっぱいに収まるよう`object-position`を調整済み
 
 ### Section 03 — UNISON イントロ
 - 見出し「UNISON」は`<p>`タグ（h1ではない。h1はヘッダーロゴのみのため）
@@ -178,32 +184,56 @@
 - 見出しは`<h2>`、PCで28px
 - 背景色`#191B24`を画面幅いっぱいに拡張（3.3の全幅背景パターン使用、`clip-path`込みで隣接セクションへの色漏れなし）
 
+### Section 09 — メンズウェア（フーディー）紹介（`.menswear`、バッグ側フローで番号が再度09から始まる。コード内コメント準拠）
+- 2枚の写真（`bag-bg01`/`02`系）の継ぎ目に重なる**円形（フロストガラス風、`backdrop-filter:blur(6px)`）**にコピーを乗せるレイアウト。テキストは「両手を自由にする、革新のカラビナフック。DOGウェアと美しく同調する、撥水加工リバーシブル・ハンズフリーバッグ。」
+- 円の背景色：`rgba(65, 75, 82, 0.52)`（`#414B52`の52%透過）
+- 円のサイズ：**SP `min(320px, 78%)`／PC `330px`固定**
+- **SP専用画像を`<picture>`で出し分け**：SPは`bag-bg_sp01.png`/`bag-bg_sp02.png`（750×1020、SP幅に合わせて別途トリミング支給されたアセット）を縦に隙間なく2枚積む。PC（768px〜）は`<source media="(min-width:768px)">`で従来の`bag-bg01.png`/`bag-bg02.png`（1920×2012）に切り替え、横並びにする。画像ごとに比率が異なるため`.menswear__grid img`の`aspect-ratio`もSP（750/1020）とPC（1920/2012）で出し分けている
+  - `<picture>`はflexアイテムとして扱わせないよう`display:contents`を指定（中の`img`がそのままflexアイテムになるようにするため）
+  - ⚠️ devサーバーで**ビューポートをリサイズしただけ**だと`<picture>`の画像選択が再評価されないことがある（ブラウザの`<picture>`仕様）。確認時は必ずページを再読み込みすること
+
 ### Section 13 — エッセンシャル リバーシブルバッグ
 - サムネイルグリッド：4列→**5列**に統一（コートと同じパターン）
 - 見出しは**右揃え**＋罫線**非表示**（`.bag-product`スコープ）
 - Purchaseボタン・fabric/color小文字化はコートと同様（Section 05参照）
 - **画像解像度：`bag-01.png`のみ高解像度（1760×1760）。`bag-02.png`〜`bag-10.png`はまだ306×306pxの低解像度のまま（未解決、要差し替え）**
 
+### Section 13 — ショルダーストラップ仕様（`.cutting`、`.cutting--gap-top`修飾クラス）
+- 直前が「撥水加工素材（バッグ）」（`hassui-bg`、標準の`.section`パディングのみ）で他の`.cutting`（立体裁断・着用シーン、Purchaseボタン分の余分な余白がある商品セクションの直後）より上の余白が狭く見えたため、`.cutting--gap-top`修飾クラスを追加し標準の`.section`上パディング（SP 64px/PC 96px）を補った
+- テキスト（`.cutting__copy`）の位置：top.png実測の結果、画像上端から**約33%の位置**（他の`.cutting`インスタンスの`top:12%`とは異なる）。このセクションのみ`.cutting--gap-top .cutting__copy { top: 33%; }`で個別に補正
+- テキスト背景色は他の`.cutting__copy`と共通の`#0303051c`（ほぼ黒・11%程度の淡いオーバーレイ）のまま変更なし
+
+### Section 14 — 両面の表情を持つ（`.reversible`）
+- 見出しは**右揃え**（top.png実測。`.bag-product`と同じ扱い）。PCのみ`.reversible :global(.section-heading) { text-align: right; }`
+- 写真2枚の対角配置（48%/52%継ぎ目一致、写真2下寄せ）は変更なし
+
 ### Section 15 — 撥水加工素材（バッグ）
 - 背景色`#1B232A`を画面幅いっぱいに拡張（コート側の「撥水加工素材」と共通、`.hassui-bg`クラス＋3.3の全幅背景パターン）
 
 ### Section 18 — detailed information
-- 見出しは`<h2>`
+- 見出しは`<h2>`、`margin-bottom`は**40px**（以前は24px）
 - **仕様変更（アイコン→ナンバーバッジ）**：`information-01`〜`04`の画像アイコンは廃止。top.png再実測の結果、カード左上にオーバーラップする円形の「01」〜「04」ナンバーバッジに変更された。バッジは塗り潰し円（`#494949`）、文字は白・**Roboto Condensed（weight 300）**。フォントは`BaseLayout.astro`の`<head>`でGoogle Fontsから読み込み（`Roboto+Condensed:wght@300;400`）
 - カード自体も枠線のみ→**塗り潰し背景**（`#07080a`、ほぼ黒）の角丸パネルに変更。border-radius 10px
 - 画像アイコンが完全に不要になったため、`Placeholder.astro`コンポーネントは削除済み（他に使用箇所なし）
+- **セクション背景**：top.png実測により`#1B232A`（`hassui-bg`クラス、3.3の全幅背景パターン）を追加。カードの塗り潰し背景（`#07080a`）とのコントラストでtop.png通りの見た目になる
+- **カードグリッドのgap**：SPは`gap:30px`（縦積み1カラム）。PCは`display:grid`の2カラムで**column-gap:24px / row-gap:40px**と縦横で差をつけている（以前はflexboxの`flex-wrap`を使っており、2行目ぶんコンテナの高さがreveal未発火時に不足する潜在バグがあったためgridに変更。実害はopacity:0の間だけだったが念のため修正）
 
 ### Section 19 — concept
 - 見出しラベル「concept」は`<h2>`
 - **レイアウトの結論**：写真とテキストパネルの**背景は画面の真の端まで届く**（`.section`のmax-width:1200px・左右paddingを`.concept`のみ打ち消し）。**テキストの本文だけ**はコンテンツ幅の基準線（`max(40px, calc((100vw - 1200px)/2 + 40px))`）に合わせて右側にpaddingを取り、他セクションと揃える
   - ※このレイアウトは1往復のやり直しを経て確定した仕様。「行全体を1200pxに収めて背景だけ画面幅に広げる」バージョンを一度実装したが、これは誤りで、正しくは「行（写真＋パネル）ごと画面幅に広がり、テキストのみコンテンツ幅で止まる」が正解だった（現在の実装はこちらで確定）
 - 写真に`rgba(27, 35, 42, 0.6)`の色オーバーレイを追加。ラベル「concept」文字はオーバーレイより手前に見えるよう`z-index:2`（オーバーレイ側は`z-index:1`）
+- **SP幅でも左右フルブリード化**：以前はSPのみ`.section`の左右paddingが残ったままで、画像・パネル背景の左右に余白ができていた。`.concept`にSP/PCとも`padding-left:0; padding-right:0;`を追加して解消
+- **テキストパネル背景色**：top.png実測により`#121517`に変更（以前は`var(--color-newsbar-bg)` = `#1B2326`）
+- **上の余白を撤去**：直前のdetailed informationと隙間なく連続させるため、SP/PCとも`padding-top:0`を追加
 
 ### Section 20 — memories
 - Section 19と同様の考え方（左右ミラー）。見出しラベル「memories」は`<h2>`、写真にも同じ色オーバーレイ
+- SP幅でも左右フルブリード化（Section 19と同様、`padding-left:0; padding-right:0;`をSP/PCとも追加）
+- **下の余白を撤去**：直後の「Follow us」セクションと隙間なく連続させるため、SP/PCとも`padding-bottom:0`を追加
 
 ### Section 21 — Follow us
-- SNSアイコンは**5個→3個に削減**（Facebook/X/Instagramのみ。LinkedIn/YouTube用の`icon-04.png`/`icon-05.png`は削除）
+- SNSアイコンは**5個→3個に削減**。当初はFacebook/X/Instagramの構成だったが、画像差し替え後は**Facebook/Instagram/TikTok**の3つに変更（`icon-01`〜`03.png`自体は同じファイル名のまま中身を差し替え。`aria-label`を実際のロゴに合わせて修正済み）
 
 ### Section 22 — news
 - 見出しは`<h2>`、PCで28px
@@ -217,22 +247,25 @@
 
 | コンポーネント | 変更点 |
 |---|---|
-| `Header.astro` | テキストロゴ→`<img src="logo.png">`（65px高さ）、`<h1>`でラップ |
-| `SectionHeading.astro` | 出力タグを`<p>`→**`<h2>`**に変更（見た目のCSSクラス構成は同じ） |
-| `Footer.astro` | Back To Topの`border`を削除 |
-| `.cutting`（立体裁断・着用シーン・ショルダーストラップ仕様で共通） | 見出し罫線の右端伸長・margin-bottom修正（4.6参照） |
-| `.hassui-bg`（新規クラス、撥水加工素材コート/バッグ共通） | 背景色`#1B232A`＋全幅背景パターン |
+| `Header.astro` | テキストロゴ→`<img src="logo.png">`、`<h1>`でラップ。高さ**SP 40px / PC 65px** |
+| `SectionHeading.astro` | 出力タグを`<p>`→**`<h2>`**に変更（見た目のCSSクラス構成は同じ）。`.section-heading__title--h2`は固定28px→`clamp(22px, 2vw + 1rem, 28px)` |
+| `BaseLayout.astro` | グローバルCSSに`h2 { font-size: clamp(22px, 2vw + 1rem, 28px); }`を追加（個別クラス指定がない`h2`のフォールバック基準） |
+| `Footer.astro` | Back To Topの`border`を削除。**スクロール量300px以下では非表示、超えたらフェードイン**する挙動を追加（`.is-visible`クラスをJSでトグル） |
+| `.cutting`（立体裁断・着用シーン・ショルダーストラップ仕様で共通） | 見出し罫線の右端伸長・margin-bottom修正（4.6参照）。`.cutting--gap-top`修飾クラスでショルダーストラップ仕様のみ上パディングとテキスト位置（top:33%）を個別補正 |
+| `.hassui-bg`（新規クラス、撥水加工素材コート/バッグ・detailed information共通） | 背景色`#1B232A`＋全幅背景パターン |
+| `.menswear__grid`（メンズウェア紹介） | SP専用画像（`bag-bg_sp01/02.png`）を`<picture>`で出し分け。circleの背景色`rgba(65,75,82,0.52)`・PCサイズ330px固定 |
 | Product Gallery（コート・バッグ共通） | サムネイル列数を5列に統一 |
 
 ---
 
 ## 6. アセット準備リスト（現状ステータス・最新）
 
-- [x] ロゴ画像：**支給済み**（`public/images/logo.png`, 550×356）。実装済み（65px高さ）
-- [x] ヒーロー用動画：**支給済み**（`public/videos/hero.mp4`, 1920×1080, 16:9, 約31MB）。実装済み
+- [x] ロゴ画像：**支給済み**（`public/images/logo.png`, 550×356）。実装済み（高さSP 40px/PC 65px）
+- [x] ヒーロー用動画：**支給済み**（`public/videos/hero.mp4`, 1920×1080, 16:9, 約31MB）。実装済み（SPは4:5クロップ）
 - [x] コート商品写真：**`coat-01`〜`coat-10`は全て高解像度化済み**（低解像度問題は解消）
 - [x] バッグ商品写真：**`bag-02`〜`bag-10`は612×612に高解像度化済み**（`bag-01`の1760×1760と合わせて低解像度問題は解消）
-- [x] SNSアイコン（`icon-01`〜`icon-03`）：支給済み、実装済み（Follow usは3個構成に変更、`icon-04`/`icon-05`は未使用）
+- [x] メンズウェア紹介用SP専用画像：**支給済み**（`bag-bg_sp01.png`/`bag-bg_sp02.png`, 750×1020）。実装済み（`<picture>`でPC版`bag-bg01/02.png`と出し分け）
+- [x] SNSアイコン（`icon-01`〜`icon-03`）：支給済み、実装済み。**中身がFacebook/Instagram/TikTokに差し替わった**（`icon-04`/`icon-05`は未使用のまま）
 - [x] detailed informationアイコン：**仕様変更によりそもそも画像アイコンが不要になった**（4章Section18参照。円形ナンバーバッジ「01〜04」+ Roboto Condensedに置き換え済み。`Placeholder.astro`は削除）
 - [ ] 各リンク（ヘッダーロゴ／フッター8項目／newsセクション4項目／SNSアイコン3個）の実際の遷移先：全て`#`のまま、要確定
 - [ ] conceptセクション本文への「シリアル生産／日本製」段落の追加是非（2.3参照）
@@ -286,12 +319,9 @@ npx astro dev --background
 
 ## 10. 次セッションTODO（優先度順）
 
-1. **【最優先】git commit & push**：現在、以下が未commit/未push（`git status`で確認済み）。次セッション冒頭でユーザーに確認の上、まとめてコミット・pushすること。
-   - `design.md`、`AGENTS.md`、`src/pages/index.astro`、`src/layouts/BaseLayout.astro`、`src/components/Header.astro`・`Footer.astro`・`SectionHeading.astro`の変更一式
-   - `public/images/coat-02.png`〜`coat-10.png`（高解像度差し替え）、`public/images/bag-02.png`〜`bag-10.png`（高解像度差し替え）
-   - 新規ファイル：`public/images/logo.png`、`public/videos/hero.mp4`
-   - `Placeholder.astro`の削除（detailed informationアイコン仕様変更により不要化）
-2. **各リンクの遷移先確定**：ヘッダーロゴ／フッター8項目／newsセクション4項目／SNSアイコン3個、すべて`#`のまま。実際のURLが決まったら差し替え。
-3. **conceptセクションの本文の扱い**：ブランドコンセプト公式文（2.2）にある最終段落（シリアル生産／日本製）を追加するか要相談。
-4. **detailed informationの文言統一**：4カードの文言・並び順を2.3の公式コピーに揃えるか要相談（現状は初期のカンプ転記のまま。ナンバーバッジ化は完了済み）。
-5. **和文コピー・価格・スペック値の最終確認**：本文は全てカンプから転記済みだが、確定情報かどうかの最終チェックが必要。
+1. **各リンクの遷移先確定**：ヘッダーロゴ／フッター8項目／newsセクション4項目／SNSアイコン3個、すべて`#`のまま。実際のURLが決まったら差し替え。
+2. **conceptセクションの本文の扱い**：ブランドコンセプト公式文（2.2）にある最終段落（シリアル生産／日本製）を追加するか要相談。
+3. **detailed informationの文言統一**：4カードの文言・並び順を2.3の公式コピーに揃えるか要相談（現状は初期のカンプ転記のまま。ナンバーバッジ化は完了済み）。
+4. **和文コピー・価格・スペック値の最終確認**：本文は全てカンプから転記済みだが、確定情報かどうかの最終チェックが必要。
+5. **ヒーロー動画SPのobject-position微調整**：現在`42% center`で複数タイムスタンプを目視確認した概算値。動画ループ全体を通して被写体が見切れていないか、実機で改めて確認・微調整するとより良い。
+6. **h2見出しのclamp化に伴う見え方の再確認**：`.section-heading__title--h2`・`.size-guide__title`・`.intro__title`をclamp化したことでSP/タブレット幅の見え方が変わっている。特にタブレット幅（768px前後）は係数のなだらかな遷移域に入るため、実機で違和感がないか確認するとよい。

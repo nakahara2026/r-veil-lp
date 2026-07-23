@@ -30,7 +30,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 	.site-header__logo img {
 		display: block;
-		height: 65px;
+		height: 40px;
 		width: auto;
+	}
+
+	@media (min-width: 768px) {
+		.site-header__logo img {
+			height: 65px;
+		}
 	}
 </style>
