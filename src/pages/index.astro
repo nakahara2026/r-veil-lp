@@ -618,12 +618,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	}
 
 	/* vw基準の高さにすることで、フルブリード幅（cutting）とセクション内padding幅（split)が異なっても
-	   立体裁断・撥水加工素材・リフレクターラインの3画像の高さがSPで揃う */
+	   立体裁断・撥水加工素材・リフレクターラインの3画像の高さがSPで揃う。
+	   object-fit:containで被写体（犬の全身等）が見切れないようにする */
 	.cutting__media img {
 		width: 100%;
-		height: 120vw;
+		height: 65vw;
 		aspect-ratio: auto;
-		object-fit: cover;
+		object-fit: contain;
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
 	}
 
@@ -698,7 +699,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		display: block;
 		height: 120vw;
 		aspect-ratio: auto;
-		object-fit: cover;
+		object-fit: contain;
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
 	}
 
@@ -1465,6 +1466,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		/* デザインカンプ実測：罫線は左端はコンテンツ幅で止まるが、右端は画面の真の端まで伸びる。
 		   width:100%指定があるため、negative marginでは伸びない → widthそのものを拡張する */
 		.cutting :global(.section-heading__rule) {
+			width: calc(100% + max(40px, (100vw - 1200px) / 2 + 40px));
+		}
+
+		/* 撥水加工素材（コート/バッグ共通、.hassui-bg）・他のこだわり・両面の表情を持つ：
+		   .cuttingと同じ考え方だが、伸ばす方向を逆にする。右端はコンテンツ幅で止め、左端を画面の真の端まで伸ばす */
+		.hassui-bg :global(.section-heading__rule),
+		.material-detail :global(.section-heading__rule),
+		.reversible :global(.section-heading__rule) {
+			width: calc(100% + max(40px, (100vw - 1200px) / 2 + 40px));
+			margin-left: calc(-1 * max(40px, (100vw - 1200px) / 2 + 40px));
+		}
+
+		/* リフレクターライン：.cuttingと同じ右伸長パターン */
+		.split--reverse :global(.section-heading__rule) {
 			width: calc(100% + max(40px, (100vw - 1200px) / 2 + 40px));
 		}
 
