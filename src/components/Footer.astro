@@ -1,13 +1,14 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const links = [
-	'reservation',
-	'privacy policy',
-	'contact',
-	'payment',
-	'concept',
-	'contact us',
-	'pre-order benefit',
-	'question and answer',
+	{ label: 'reservation', href: '#' },
+	{ label: 'privacy policy', href: '#' },
+	{ label: 'contact', href: '#' },
+	{ label: 'payment', href: '#' },
+	{ label: 'concept', href: '#' },
+	{ label: 'contact us', href: '#' },
+	{ label: 'pre-order benefit', href: `${base}/benefit/` },
+	{ label: 'question and answer', href: '#' },
 ];
 ---
 
@@ -15,9 +16,9 @@ const links = [
 	<div class="site-footer__body">
 		<ul class="site-footer__links">
 			{
-				links.map((label) => (
+				links.map(({ label, href }) => (
 					<li>
-						<a href="#">{label}</a>
+						<a href={href}>{label}</a>
 					</li>
 				))
 			}

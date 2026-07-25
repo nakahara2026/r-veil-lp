@@ -1,0 +1,484 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+
+const benefitPhotos = Array.from({ length: 5 });
+const pad2 = (n) => String(n).padStart(2, '0');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+	title="R VEIL — ご予約特典"
+	description="ご予約いただいた先着20名様に、断熱マルチポーチをプレゼント。"
+>
+	<main class="benefit-page">
+		<section class="section benefit-heading-section">
+			<div class="benefit-heading">
+				<h2 class="benefit-heading__title">
+					pre-order benefit<span class="benefit-heading__subtitle">ご予約特典</span>
+				</h2>
+				<span class="benefit-heading__rule"></span>
+			</div>
+		</section>
+
+		<section class="section benefit-intro">
+			<div class="benefit-intro__body">
+				<p class="benefit-intro__title">ご予約いただいた先着20名様にマルチポーチをプレゼント</p>
+				<p class="section__copy">
+					ミニマルでエッジの効いたスクエアデザイン。ガジェットや小物を収納するマルチポーチとしてお使いいただけます。内側には保温・保冷シートを使用し、冷たいドリンクや温かい飲み物の持ち運びにも便利です。
+				</p>
+				<p class="note">
+					※プレゼントは小物入れ本体のみです。サングラスは含まれません。<br />
+					※掲載画像は試作品をもとにしたイメージです。実際の商品とは、色味・仕様・ロゴの配置などが異なる場合があります。
+				</p>
+			</div>
+			<div class="benefit-intro__visual">
+				<div class="benefit-stack">
+					<img
+						class="benefit-stack__img benefit-stack__img--back"
+						src={`${base}/images/benefit.png`}
+						alt=""
+						aria-hidden="true"
+					/>
+					<img
+						class="benefit-stack__img benefit-stack__img--front"
+						src={`${base}/images/benefit.png`}
+						alt="ポーチとサングラスの写真"
+					/>
+				</div>
+			</div>
+		</section>
+
+		<section class="section benefit-product">
+			<div class="product-detail__body">
+				<div class="product-gallery" id="benefit-gallery" data-reveal>
+					<div class="carousel" id="benefit-carousel">
+						{
+							benefitPhotos.map((_, i) => (
+								<div class="carousel__slide carousel__slide--square">
+									<img
+										src={`${base}/images/benefit-${pad2(i + 1)}.png`}
+										alt={`断熱マルチポーチ写真 ${i + 1}/5`}
+										loading="lazy"
+									/>
+								</div>
+							))
+						}
+					</div>
+					<div class="carousel__dots" id="benefit-dots">
+						{
+							benefitPhotos.map((_, i) => (
+								<button class="carousel__dot" data-index={i} aria-label={`${i + 1}枚目を表示`} type="button" />
+							))
+						}
+					</div>
+					<div class="thumb-grid" id="benefit-thumbs">
+						{
+							benefitPhotos.map((_, i) => (
+								<button class="thumb-grid__item" data-index={i} aria-label={`${i + 1}枚目に切り替え`} type="button">
+									<img src={`${base}/images/benefit-${pad2(i + 1)}.png`} alt="" loading="lazy" />
+								</button>
+							))
+						}
+					</div>
+				</div>
+
+				<div class="benefit-product__info" data-reveal>
+					<SectionHeading title="断熱マルチポーチ" subtitle="Insulated Multi-Pouch" />
+					<dl class="spec-list">
+						<div class="spec-list__row">
+							<dt>size</dt>
+							<dd>H22cm / W11.5cm</dd>
+						</div>
+						<div class="spec-list__row">
+							<dt>fabric</dt>
+							<dd>100% nylon</dd>
+						</div>
+						<div class="spec-list__row">
+							<dt>color</dt>
+							<dd>dark gray</dd>
+						</div>
+					</dl>
+					<span class="swatch-bar swatch-bar--benefit" aria-hidden="true"></span>
+				</div>
+			</div>
+		</section>
+
+		<section class="section benefit-close">
+			<a href={`${base}/`} class="btn-circle benefit-close-btn">close</a>
+		</section>
+	</main>
+</BaseLayout>
+
+<style>
+	/* コンテンツ幅（index.astroの.sectionと共通の考え方）: モバイルは左右20px、PCは1200px中央寄せ+40px */
+	.section {
+		padding: 64px 20px;
+	}
+
+	.benefit-page {
+		padding-bottom: 40px;
+	}
+
+	/* Section B1: ヘッダー見出し「pre-order benefit / ご予約特典」 */
+	.benefit-heading-section {
+		padding-bottom: 0;
+	}
+
+	.benefit-heading__title {
+		margin: 0;
+		display: flex;
+		align-items: baseline;
+		gap: 12px;
+		color: var(--color-heading);
+		font-size: clamp(22px, 2vw + 1rem, 28px);
+		font-weight: 400;
+		letter-spacing: 0.06em;
+	}
+
+	.benefit-heading__subtitle {
+		color: var(--color-caption);
+		font-size: 13px;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+	}
+
+	.benefit-heading__rule {
+		display: block;
+		width: 100%;
+		height: 1px;
+		margin-top: 12px;
+		background: var(--color-divider);
+	}
+
+	/* Section B2: 予約特典イントロ。
+	   デザインカンプ実測：背景は画面いっぱいには伸びず、他の.sectionと同じコンテンツ幅の内側に収まる
+	   （.hassui-bgのような全幅background技法は使わない） */
+	.benefit-intro {
+		position: relative;
+		background: #1b232a;
+	}
+
+	.benefit-intro__body {
+		position: relative;
+		z-index: 2;
+	}
+
+	/* 写真スタックをテキストの下部に重ねて配置する（テキスト要素と重なり合う配置） */
+	.benefit-intro__visual {
+		position: relative;
+		z-index: 1;
+		width: min(360px, 70%);
+		aspect-ratio: 1778 / 1040;
+		margin: -64px 0 24px auto;
+	}
+
+	.benefit-intro__title {
+		margin: 0 0 20px;
+		color: var(--color-heading);
+		font-size: 18px;
+		font-weight: 400;
+		line-height: 1.6;
+	}
+
+	.section__copy {
+		margin: 0 0 24px;
+		color: var(--color-body);
+	}
+
+	.note {
+		margin: 24px 0 0;
+		color: var(--color-caption);
+		font-size: 10px;
+		line-height: 1.8;
+	}
+
+	/* Section B3/B4: 商品ギャラリー・スペック（coat/bag商品詳細と共通パターン） */
+	.product-detail__body {
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+	}
+
+	.carousel {
+		display: flex;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		gap: 12px;
+		margin-bottom: 12px;
+		scrollbar-width: none;
+	}
+
+	.carousel::-webkit-scrollbar {
+		display: none;
+	}
+
+	.carousel__slide {
+		flex: 0 0 100%;
+		scroll-snap-align: start;
+	}
+
+	.carousel__slide--square {
+		aspect-ratio: 1 / 1;
+		border-radius: 20px;
+		overflow: hidden;
+	}
+
+	.carousel__slide--square img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* Section B2用：背面（ぼかし・明るめ）と手前（シャープ）の2枚を右下方向にずらして重ねる、写真スタック風の演出。
+	   テキストパネルの下端に重なるよう配置する */
+	.benefit-stack {
+		position: relative;
+		width: 100%;
+		height: 100%;
+	}
+
+	.benefit-stack__img {
+		position: absolute;
+		width: 82%;
+		height: 82%;
+		object-fit: cover;
+		border-radius: 16px;
+	}
+
+	.benefit-stack__img--back {
+		top: 0;
+		left: 0;
+		z-index: 1;
+		filter: blur(14px) brightness(1.3) saturate(0.9);
+		box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+	}
+
+	.benefit-stack__img--front {
+		right: 0;
+		bottom: 0;
+		z-index: 2;
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+	}
+
+	.carousel__dots {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+		margin-bottom: 20px;
+	}
+
+	.carousel__dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		border: none;
+		background: var(--color-divider);
+		padding: 0;
+	}
+
+	.carousel__dot.is-active {
+		background: var(--color-heading);
+	}
+
+	.thumb-grid {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 8px;
+	}
+
+	.thumb-grid__item {
+		background: none;
+		border: 1px solid transparent;
+		padding: 0;
+		aspect-ratio: 1 / 1;
+		border-radius: 20px;
+		overflow: hidden;
+	}
+
+	.thumb-grid__item img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.thumb-grid__item.is-active {
+		border-color: var(--color-heading);
+	}
+
+	.spec-list {
+		margin: 0 0 20px;
+	}
+
+	.spec-list__row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px 0;
+		border-bottom: 1px solid var(--color-divider);
+	}
+
+	.spec-list__row dt {
+		color: var(--color-caption);
+		font-size: 11px;
+		letter-spacing: 0.08em;
+		text-transform: lowercase;
+	}
+
+	.spec-list__row dd {
+		margin: 0;
+		color: var(--color-body);
+		font-size: 13px;
+	}
+
+	/* デザインカンプの単色バー表現（コート/バッグのグラデーション表現とは別に、単色dark grayのみ） */
+	.swatch-bar {
+		display: block;
+		flex: 1 1 auto;
+		max-width: 220px;
+		height: 16px;
+		border-radius: 2px;
+		border: 1px solid var(--color-divider);
+	}
+
+	.swatch-bar--benefit {
+		background: #45464a;
+	}
+
+	/* Section B5: close CTA。Purchase/Back to Topと同じ.btn-circle基盤＋専用配色 */
+	.benefit-close {
+		display: flex;
+	}
+
+	.benefit-close-btn {
+		width: 120px;
+		height: 120px;
+		background: rgba(76, 55, 100, 0.7);
+		text-decoration: none;
+	}
+
+	@media (min-width: 768px) {
+		.section {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 96px 40px;
+		}
+
+		.benefit-heading-section {
+			padding-bottom: 0;
+		}
+
+		/* デザインカンプ実測パターン踏襲：右端だけ画面の真の端まで伸ばす（.cutting/.split--reverseと同じ考え方） */
+		.benefit-heading__rule {
+			width: calc(100% + max(40px, (100vw - 1200px) / 2 + 40px));
+		}
+
+		.benefit-intro__title {
+			font-size: 22px;
+		}
+
+		.product-detail__body {
+			flex-direction: row;
+			align-items: flex-start;
+			gap: 64px;
+		}
+
+		.product-gallery {
+			flex: 0 1 auto;
+			width: min(60vh, 500px);
+		}
+
+		.benefit-product__info {
+			flex: 1 1 0;
+		}
+
+		#benefit-carousel {
+			width: 100%;
+			height: auto;
+			aspect-ratio: 1 / 1;
+			margin: 0 auto 12px;
+		}
+
+		#benefit-carousel .carousel__slide {
+			height: 100%;
+		}
+
+		.product-gallery .thumb-grid,
+		.product-gallery .carousel__dots {
+			width: 100%;
+		}
+	}
+</style>
+
+<script>
+	function initGallery(prefix) {
+		const carousel = document.getElementById(`${prefix}-carousel`);
+		const dotsContainer = document.getElementById(`${prefix}-dots`);
+		const thumbsContainer = document.getElementById(`${prefix}-thumbs`);
+
+		if (!carousel || !dotsContainer || !thumbsContainer) return;
+
+		const slides = Array.from(carousel.querySelectorAll('.carousel__slide'));
+		const dots = Array.from(dotsContainer.querySelectorAll('.carousel__dot'));
+		const thumbs = Array.from(thumbsContainer.querySelectorAll('.thumb-grid__item'));
+
+		let activeIndex = 0;
+
+		const setActive = (index) => {
+			activeIndex = index;
+			dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+			thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === index));
+		};
+
+		const goTo = (index) => {
+			const slide = slides[index];
+			if (slide) {
+				carousel.scrollTo({ left: slide.offsetLeft, behavior: 'smooth' });
+			}
+		};
+
+		const AUTOPLAY_INTERVAL = 4000;
+		let autoplayTimer = 0;
+
+		const startAutoplay = () => {
+			autoplayTimer = window.setInterval(() => {
+				goTo((activeIndex + 1) % slides.length);
+			}, AUTOPLAY_INTERVAL);
+		};
+
+		const restartAutoplay = () => {
+			window.clearInterval(autoplayTimer);
+			startAutoplay();
+		};
+
+		dots.forEach((dot, i) =>
+			dot.addEventListener('click', () => {
+				goTo(i);
+				restartAutoplay();
+			}),
+		);
+		thumbs.forEach((thumb, i) =>
+			thumb.addEventListener('click', () => {
+				goTo(i);
+				restartAutoplay();
+			}),
+		);
+
+		const slideObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						setActive(slides.indexOf(entry.target));
+					}
+				});
+			},
+			{ root: carousel, threshold: 0.6 },
+		);
+		slides.forEach((slide) => slideObserver.observe(slide));
+
+		setActive(0);
+		startAutoplay();
+	}
+
+	initGallery('benefit');
+</script>

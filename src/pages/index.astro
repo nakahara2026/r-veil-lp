@@ -422,7 +422,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 			<section class="section news">
 				<h2 class="news__title">news</h2>
 				<div class="news__list">
-					<a class="news__item" href="#" data-reveal>
+					<a class="news__item" href={`${base}/benefit/`} data-reveal>
 						<div class="news__thumb"><img src={`${base}/images/news-04.png`} alt="サングラスとポーチのプロダクトショット" /></div>
 						<div class="news__body">
 							<p class="news__text">ご予約のお客様先着20名に断熱素材、撥水加工小物入れをプレゼント。</p>
@@ -568,10 +568,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		position: relative;
 	}
 
+	/* SPは元画像が横長(3840/2000)で被写体の上下に余白ができるため、
+	   ヒーロー動画と同じ考え方で縦長クロップにし、被写体が画面いっぱいに収まるようにする。
+	   PCは実寸比率・クロップなしに戻す（PC専用ルールは下記メディアクエリ内） */
 	.intro__media {
 		width: 100%;
-		aspect-ratio: 3840 / 2000;
+		aspect-ratio: 4 / 5;
 		object-fit: cover;
+		object-position: 60% center;
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
 	}
 
@@ -641,10 +645,14 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		position: relative;
 	}
 
+	/* SPは元画像が横長(3840/2640)で被写体の上下に余白ができるため、
+	   ヒーロー動画と同じ考え方で縦長クロップにし、被写体が画面いっぱいに収まるようにする。
+	   PCは実寸比率・クロップなしに戻す（PC専用ルールは下記メディアクエリ内） */
 	.interlude__media {
 		width: 100%;
-		aspect-ratio: 3840 / 2640;
+		aspect-ratio: 4 / 5;
 		object-fit: cover;
+		object-position: 45% center;
 		filter: grayscale(5%) contrast(1.05) brightness(0.95);
 	}
 
@@ -653,7 +661,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		position: absolute;
 		top: 48px;
 		left: 20px;
-		max-width: 280px;
 		margin: 0;
 		padding: 16px 20px;
 		border-radius: 15px;
@@ -1406,6 +1413,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 		.hero__controls {
 			left: max(40px, calc((100% - 1200px) / 2 + 40px));
 			right: max(40px, calc((100% - 1200px) / 2 + 40px));
+		}
+
+		/* PCは実寸比率・クロップなしに戻す（SPのみ縦長クロップにする） */
+		.intro__media {
+			aspect-ratio: 3840 / 2000;
+			object-position: center;
+		}
+
+		.interlude__media {
+			aspect-ratio: 3840 / 2640;
+			object-position: center;
 		}
 
 		/* コンテンツ最大幅（design.md 7.1）: 一般的なグリッド幅として1200pxに調整 */
