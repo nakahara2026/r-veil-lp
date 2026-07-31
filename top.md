@@ -86,6 +86,7 @@ design.md 3.3の「見出し罫線を画面端まで伸ばすテクニック」�
 ### Section 04 — ビジュアルインターリュード
 - 背景写真：**PC**は実寸3840/2640に一致させクロップなし、テキストは左上オーバーレイ＋gradientパネルで可読性確保。**SP**はSection 03と同じ考え方で`aspect-ratio: 4/5; object-fit: cover; object-position: 45% center;`の縦長クロップにする
 - `.interlude__copy`の`max-width`：**SP**はなし（`max-width`指定を削除し、画面幅いっぱいまで広げて2行に収める）。**PC**は`480px`のまま変更なし
+- `.interlude__copy`の`padding`：**SP**は`16px 20px`→`24px 0px`に変更（左右paddingをなくし、テキストパネルの背景グラデーションを画面幅いっぱいに広げる意図。PC側の`padding:24px 32px`は変更なし）
 
 ### Section 05 — 全天候型対応サイトハウンドアウター（コート）
 - メイン商品写真カルーセル：**`coat-01.png`〜`coat-10.png`の10枚**、サムネイルグリッドは**5列×2段**

@@ -98,7 +98,7 @@
 
 ### 共通コンポーネントの再利用状況（Purchase系CTA・Back to Top）
 
-- **Back to Top**：`Footer.astro`をそのまま流用しているため、追加実装なしで自動的に再現されている（design.md 3.4の挙動・トークンそのまま）。
+- **Back to Top**：**非表示**。「下層ページにはBack to TopのCTAは設置しない」というユーザー指示により、`<BaseLayout showBackToTop={false} ...>`を指定して`Footer.astro`側で`<button id="back-to-top">`自体をレンダリングしないようにした（design.md 4章参照。以前はそのまま表示していたが撤回）。
 - **Purchase系CTA**：**このページでは未使用**。B4（商品詳細）はプレゼント品のため購入導線が存在せず、Purchase系CTA（`rgba(76,66,90,0.8)`）は登場しない。
 - **close CTA（新規）**：`.btn-circle`（design.md 3.4の共通circle基盤）は流用しつつ、背景色のみ`rgba(76, 55, 100, 0.7)`という**このページ専用の3つ目のトークン**を新規追加した。Purchase・Back to Topいずれとも異なる配色にしたのは、「購入」でも「先頭に戻る」でもない第三の意味（ページを閉じてトップへ戻る）を持つボタンのため、既存2トークンの使い回しを避けた判断。
 

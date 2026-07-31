@@ -1,6 +1,6 @@
 # R VEIL — 全ページ共通 設計書 (design.md)
 
-> このファイルは**サイト全体（トップページ・下層ページ問わず）に共通するルール**をまとめたもの。特定ページの構成・文言・実装詳細は各ページごとの `○○.md`（トップページは [top.md](top.md)、ご予約特典ページは [benefit.md](benefit.md)）を参照する。新規ページを実装する際は、このファイルを読んだうえで、対象ページの `○○.md` を作成/参照すること。
+> このファイルは**サイト全体（トップページ・下層ページ問わず）に共通するルール**をまとめたもの。特定ページの構成・文言・実装詳細は各ページごとの `○○.md`（トップページは [top.md](top.md)、ご予約特典ページは [benefit.md](benefit.md)、Q&Aページは [qa.md](qa.md)、お支払い方法ページは [payment.md](payment.md)）を参照する。新規ページを実装する際は、このファイルを読んだうえで、対象ページの `○○.md` を作成/参照すること。
 
 ## 1. 概要
 
@@ -142,6 +142,10 @@
 ```
 
 > どのセクションの罫線をどちら方向に伸ばすかはページ・デザインカンプ次第。具体的な対象セクションの一覧は各ページの`○○.md`に記載する（トップページの例は[top.md](top.md)、ご予約特典ページの例は[benefit.md](benefit.md)を参照）。
+>
+> **⚠️ 親要素が`display:flex`の場合の注意**：見出しと罫線を横並びにするため親コンテナ（見出しラッパー）を`display:flex`にしているケースがある。この場合、罫線もflexアイテムとして扱われ、既定の`flex-shrink:1`により、`calc(100% + Npx)`で広げたはずの幅がコンテナの残り幅に収まるよう**縮小されてしまい、拡張が無効化される**（Q&Aページで実際に発生）。対象要素に`flex-shrink: 0;`を追加すること。
+
+
 
 #### 全幅背景の実装パターン（重要・再利用中）
 
@@ -212,7 +216,7 @@
 | コンポーネント | 役割・仕様 |
 |---|---|
 | `Header.astro` | ロゴは**画像**（`logo.png`）。`<h1><a href={base+"/"}><img src="logo.png"></a></h1>`。ページ内で唯一のh1。ロゴ高さはSP/PCでclamp・メディアクエリ等により可変（具体値は各ページ参照）。**`logo.png`は黒一色のアセット（白ピクセルなし）のため、`filter: invert(1)`で白反転させて表示している**（ロゴ配色トークンはPure White `#FFFFFF`。反転を忘れるとダーク背景で見えなくなる／トップページのヒーロー動画のように背景に明るい部分がある場合はたまたま視認できてしまうため気づきにくい不具合だった） |
-| `Footer.astro` | フッターリンク一覧＋Back To Topボタンを内包。Back To Topの表示ロジック（3.4参照）もここで制御。リンクは`links = [{ label, href }, ...]`の配列（`base`変数を使い実URLを個別に設定できる。未確定のものは`href: '#'`のまま） |
+| `Footer.astro` | フッターリンク一覧＋Back To Topボタンを内包。Back To Topの表示ロジック（3.4参照）もここで制御。リンクは`links = [{ label, href }, ...]`の配列（`base`変数を使い実URLを個別に設定できる。未確定のものは`href: '#'`のまま）。**Back To Topは`showBackToTop`プロパティ（既定`true`）で表示/非表示を切り替えられる**：`BaseLayout`が`showBackToTop`propを受け取り`<Footer showBackToTop={showBackToTop} />`として伝播する。`false`の場合`<button id="back-to-top">`自体がレンダリングされない（Footer側スクリプトは`document.getElementById`の結果に対しoptional chainingを使っているため、ボタンが存在しなくてもエラーにならない）。**下層ページ（ご予約特典・Q&A・お支払い方法）は`showBackToTop={false}`を指定し、Back To Topを表示しない運用**（トップページはpropを指定せず既定の`true`のまま） |
 | `SectionHeading.astro` | `<h2>`＋任意のsubtitle＋下線罫（`.section-heading__rule`）を出力する共通見出しコンポーネント。`.section-heading`のmargin-bottomは**30px** |
 | `BaseLayout.astro` | `<head>`・グローバルCSS（カラートークン、`h2`のclampベース値、リセットCSS等）・`data-reveal`の`IntersectionObserver`・**`.btn-circle`（円形CTAボタンの共通基盤：形状・境界線・トランジションのみを定義し、背景色は使う側で個別に指定する。Purchase系CTA・Back to Top・下層ページ独自のCTA<例：benefit.mdの「close」ボタン>はいずれもこれを継承）**を提供 |
 | Product Gallery（カルーセル＋ドット＋サムネイル、`initGallery(prefix)`） | コート/バッグ（top.md）・ご予約特典（benefit.md）の2ページで実装・再利用を確認した共通パターン。**ただしAstroのCSSはファイルスコープのため、他ページで使う場合はCSS・JSともコピーして持ち込む必要がある**（4.1参照）。メイン画像・サムネイルの角丸は`overflow:hidden`の親要素だけでなく`<img>`自身にも同じ`border-radius`を明示する（Safari/WebKit系でobject-fit:coverのimgがGPU合成レイヤーに昇格し親のクリップが効かないことがあるための保険。親・img双方が同サイズであればどちらか一方の指定だけでも見た目は変わらず相互に冗長だが、どちらも残して問題ない） |
@@ -225,6 +229,8 @@
 **ここで踏んだ既知の不具合**：`set:html`で注入した要素（例：`<br class="sp-break">`）は、Astroのスコープ付きCSSが自動付与する`data-astro-cid-*`属性が**付与されない**（Astroの静的解析はテンプレート内に直接書かれた要素にしかスコープ属性を付けられず、`set:html`で実行時に注入される生HTML文字列の中身までは解析できないため）。そのため、呼び出し元ページ（例：`index.astro`）側のスコープ付き`<style>`で`.sp-break { display: none; }`のようなルールを書いても、Astroの変換後は`.sp-break[data-astro-cid-呼び出し元のID]`になり、スコープ属性を持たない`set:html`由来の要素には一致せず、ルールが効かない。
 
 **対処**：`title`にHTMLを埋め込んで、かつそのHTML要素をCSSで制御したい場合は、そのCSSセレクタを`:global()`で囲んでスコープを外す（例：`:global(.sp-break) { display: none; }`）。同じ`title`文字列をテンプレートに直接書く場合（`set:html`を使わない通常のプレーンテキストの`title`）はこの問題は起きない。
+
+> **一般化した教訓**：これは`SectionHeading`固有の問題ではなく、**Astroのスコープ付きCSSはビルド時にテンプレートへ直接書かれた要素にしか`data-astro-cid-*`を付与できない**という仕組み上の制約。`set:html`だけでなく、**`<script>`内で`document.createElement`等によりクライアントサイドで動的生成した要素も同様にスコープ属性が付かず、スコープ付き`<style>`のルールが一切効かない**（Q&Aページのアコーディオンで実際に発生。qa.md 4.2参照）。データ駆動でHTMLをJS生成するページでは、個別に`:global()`を付けて回るより、**そのページの`<style>`ブロックごと`<style is:global>`にしてしまう方が簡潔**（クラス名をページ固有のプレフィックスにしておけば他ページとの衝突は起きない）。
 
 ### 4.1 コンポーネント共有の実態（重要）
 

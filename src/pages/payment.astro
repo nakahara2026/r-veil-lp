@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="R VEIL — お支払い方法" description="ご利用いただけるお支払い方法のご案内" showBackToTop={false}>
+	<main class="payment-page">
+		<section class="section payment-heading-section">
+			<div class="payment-heading" data-reveal>
+				<h2 class="payment-heading__title">payment<span class="payment-heading__subtitle">お支払い方法</span></h2>
+				<span class="payment-heading__rule"></span>
+			</div>
+		</section>
+
+		<section class="section payment-body-section">
+			<div class="payment-card" data-reveal>
+				<p class="payment-card__lead">
+					お支払い方法は、下記に対応しています。<br />
+					※決済のタイミングや環境により異なる場合があります。
+				</p>
+
+				<div class="payment-card__group">
+					<p class="payment-card__label">・クレジットカード</p>
+					<p class="payment-card__value">Visa、Mastercard、JCB、American Express</p>
+				</div>
+
+				<div class="payment-card__group">
+					<p class="payment-card__label">・電子決済サービス</p>
+					<p class="payment-card__value">Apple Pay、Google Pay、Shop Pay、PayPal</p>
+				</div>
+
+				<p class="payment-card__note">※SSL暗号化による安全な決済システムを採用しています。</p>
+			</div>
+		</section>
+
+		<section class="section payment-close">
+			<a href={`${base}/`} class="btn-circle payment-close-btn">close</a>
+		</section>
+	</main>
+</BaseLayout>
+
+<style>
+	/* コンテンツ幅（他ページの.sectionと共通の考え方）: SPは左右20px、PCは1200px中央寄せ+40px */
+	.section {
+		padding: 64px 20px;
+	}
+
+	.payment-heading-section {
+		padding-bottom: 0;
+	}
+
+	.payment-heading {
+		display: flex;
+		align-items: baseline;
+		gap: 16px;
+		flex-wrap: wrap;
+	}
+
+	.payment-heading__title {
+		margin: 0;
+		color: var(--color-heading);
+		font-size: clamp(20px, 2vw + 1rem, 30px);
+		font-weight: 400;
+		letter-spacing: 0.3em;
+	}
+
+	.payment-heading__subtitle {
+		margin-left: 16px;
+		color: var(--color-caption);
+		font-size: 13px;
+		font-weight: 400;
+		letter-spacing: 0.04em;
+	}
+
+	.payment-heading__rule {
+		display: block;
+		width: 100%;
+		flex-shrink: 0;
+		height: 1px;
+		margin-top: 20px;
+		background: var(--color-divider);
+	}
+
+	/* コンテンツボックス：ページ背景(#030305)より一段明るい#1B232A（他ページのhassui-bg等と同じトーン）。
+	   親要素(.section)より狭く中央寄りに配置するため左右にmarginを追加（benefit-introと同じ考え方） */
+	.payment-card {
+		background: #1b232a;
+		margin: 0 20px;
+		padding: 40px 24px;
+	}
+
+	.payment-card__lead {
+		margin: 0 0 32px;
+		color: var(--color-heading);
+		font-size: 15px;
+		font-weight: 300;
+		line-height: 1.9;
+	}
+
+	.payment-card__group {
+		margin: 0 0 28px;
+	}
+
+	.payment-card__group:last-of-type {
+		margin-bottom: 32px;
+	}
+
+	.payment-card__label {
+		margin: 0 0 8px;
+		color: var(--color-caption);
+		font-size: 13px;
+		font-weight: 300;
+		letter-spacing: 0.02em;
+	}
+
+	.payment-card__value {
+		margin: 0;
+		color: var(--color-heading);
+		font-size: 16px;
+		font-weight: 300;
+		line-height: 1.7;
+	}
+
+	.payment-card__note {
+		margin: 0;
+		color: #ffffff;
+		font-size: 11px;
+		line-height: 1.8;
+	}
+
+	/* close CTA：他ページのclose/contact usと同じ.btn-circle基盤＋このページ専用の配色 */
+	.payment-close {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.payment-close-btn {
+		width: 120px;
+		height: 120px;
+		background: #3b2f4a;
+		text-decoration: none;
+	}
+
+	@media (min-width: 768px) {
+		.section {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 96px 40px;
+		}
+
+		.payment-heading-section {
+			padding-bottom: 0;
+		}
+
+		.payment-heading__rule {
+			width: calc(100% + max(40px, (100vw - 1200px) / 2 + 40px));
+		}
+
+		.payment-card {
+			padding: 64px 72px;
+		}
+
+		.payment-card__lead {
+			font-size: 16px;
+		}
+
+		.payment-card__label {
+			font-size: 14px;
+		}
+
+		.payment-card__value {
+			font-size: 18px;
+		}
+	}
+</style>

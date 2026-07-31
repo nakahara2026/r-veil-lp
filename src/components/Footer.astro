@@ -1,14 +1,15 @@
 ---
+const { showBackToTop = true } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const links = [
 	{ label: 'reservation', href: '#' },
 	{ label: 'privacy policy', href: '#' },
 	{ label: 'contact', href: '#' },
-	{ label: 'payment', href: '#' },
+	{ label: 'payment', href: `${base}/payment/` },
 	{ label: 'concept', href: '#' },
 	{ label: 'contact us', href: '#' },
 	{ label: 'pre-order benefit', href: `${base}/benefit/` },
-	{ label: 'question and answer', href: '#' },
+	{ label: 'question and answer', href: `${base}/qa/` },
 ];
 ---
 
@@ -30,7 +31,13 @@ const links = [
 	</div>
 </footer>
 
-<button id="back-to-top" class="back-to-top" type="button">Back To<br />Top</button>
+{
+	showBackToTop && (
+		<button id="back-to-top" class="back-to-top" type="button">
+			Back To<br />Top
+		</button>
+	)
+}
 
 <style>
 	.site-footer {

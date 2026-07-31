@@ -1,0 +1,590 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout
+	title="R VEIL — Q&A"
+	description="よくあるご質問（ご注文・製作状況・配送・お支払い・返品交換・商品について）"
+	showBackToTop={false}
+>
+	<main class="qa-page">
+		<section class="section qa-heading-section">
+			<div class="qa-heading" data-reveal>
+				<h2 class="qa-heading__title">question and answer<span class="qa-heading__subtitle">Q&A</span></h2>
+				<span class="qa-heading__rule"></span>
+			</div>
+		</section>
+
+		<section class="section qa-body-section">
+			<div class="qa-card" data-reveal>
+				<div id="qa-list"></div>
+			</div>
+		</section>
+
+		<a href="#" class="btn-circle qa-contact-btn">contact us</a>
+	</main>
+</BaseLayout>
+
+<style is:global>
+	/* このページのアコーディオン本体（カテゴリー/Q/A）はJSでdocument.createElementして動的生成しているため、
+	   Astroのスコープ付きCSS（data-astro-cid自動付与）が効かない（design.md 4.0と同種の注意点）。
+	   このページ全体のスタイルをis:globalにして回避している */
+
+	/* コンテンツ幅（index.astro/benefit.astroの.sectionと共通の考え方）: SPは左右20px、PCは1200px中央寄せ+40px */
+	.section {
+		padding: 64px 20px;
+	}
+
+	.qa-heading-section {
+		padding-bottom: 0;
+	}
+
+	.qa-heading {
+		display: flex;
+		align-items: baseline;
+		gap: 16px;
+		flex-wrap: wrap;
+	}
+
+	.qa-heading__title {
+		margin: 0;
+		color: var(--color-heading);
+		font-size: clamp(20px, 2vw + 1rem, 30px);
+		font-weight: 400;
+		letter-spacing: 0.3em;
+	}
+
+	.qa-heading__subtitle {
+		margin-left: 16px;
+		color: #ffffff;
+		font-size: 12px;
+		font-weight: 400;
+		letter-spacing: 0.2em;
+	}
+
+	.qa-heading__rule {
+		display: block;
+		width: 100%;
+		flex-shrink: 0;
+		height: 1px;
+		margin-top: 20px;
+		background: var(--color-divider);
+	}
+
+	/* Q&Aカード本体：デザインカンプ実測により#1B232A（他ページのhassui-bg等と同じ暗いネイビー） */
+	.qa-card {
+		background: #1b232a;
+		border-radius: 0px;
+		padding: 32px 20px;
+	}
+
+	/* --- カテゴリー（親アコーディオン） --- */
+	.qa-category {
+		border-bottom: 1px solid var(--color-divider);
+	}
+
+	.qa-category:first-child {
+		border-top: 1px solid var(--color-divider);
+	}
+
+	.qa-category__button {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		width: 100%;
+		padding: 24px 0;
+		background: none;
+		border: none;
+		color: var(--color-heading);
+		font-family: inherit;
+		font-size: 16px;
+		font-weight: 400;
+		text-align: left;
+		cursor: pointer;
+	}
+
+	/* grid-template-rowsによる高さアニメーション：0fr→1frでauto相当の高さに滑らかに展開する */
+	.qa-category__panel {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.35s ease;
+	}
+
+	.qa-category.is-open .qa-category__panel {
+		grid-template-rows: 1fr;
+	}
+
+	.qa-category__panel-inner {
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	.qa-category__questions {
+		padding-bottom: 8px;
+	}
+
+	/* --- Q（子アコーディオン） --- */
+	.qa-question {
+		border-top: 1px solid var(--color-divider);
+	}
+
+	.qa-question__button {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		width: 100%;
+		padding: 18px 0;
+		background: none;
+		border: none;
+		font-family: inherit;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	.qa-question__text {
+		flex: 1 1 auto;
+		color: #797d83;
+		font-size: 14px;
+		line-height: 1.7;
+	}
+
+	.qa-question__panel {
+		display: grid;
+		grid-template-rows: 0fr;
+		transition: grid-template-rows 0.3s ease;
+	}
+
+	.qa-question.is-open .qa-question__panel {
+		grid-template-rows: 1fr;
+	}
+
+	.qa-question__panel-inner {
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	/* --- A（回答） --- */
+	.qa-answer {
+		display: flex;
+		align-items: flex-start;
+		gap: 14px;
+		padding: 4px 0 24px;
+	}
+
+	.qa-answer__text {
+		flex: 1 1 auto;
+		min-width: 0;
+		color: var(--color-heading);
+		font-size: 14px;
+		line-height: 1.9;
+	}
+
+	.qa-answer__text p {
+		margin: 0 0 20px;
+	}
+
+	.qa-answer__text p:last-child {
+		margin-bottom: 0;
+	}
+
+	.qa-answer__text a {
+		color: var(--color-heading);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+	}
+
+	/* --- Q/Aバッジ（楕円バッジ、Qは中抜き・Aは塗りつぶし）。フォントはRoboto Condensed */
+	.qa-badge {
+		flex: none;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 32px;
+		border-radius: 50%;
+		font-family: 'Roboto Condensed', var(--font-sans);
+		font-size: 12px;
+		letter-spacing: 0;
+	}
+
+	.qa-badge--q {
+		background: #494949;
+		color: #ffffff;
+	}
+
+	.qa-badge--a {
+		background: #494949;
+		color: var(--color-heading);
+	}
+
+	/* --- +/− 開閉アイコン：縦棒をscaleYで縮めて−に変化させる --- */
+	.qa-toggle-icon {
+		position: relative;
+		flex: none;
+		width: 16px;
+		height: 16px;
+	}
+
+	.qa-toggle-icon::before,
+	.qa-toggle-icon::after {
+		content: '';
+		position: absolute;
+		background: currentColor;
+	}
+
+	/* 内側（Qアコーディオン）の+/-アイコンの色 */
+	.qa-question__button .qa-toggle-icon {
+		color: #797d83;
+	}
+
+	.qa-toggle-icon::before {
+		top: 50%;
+		left: 0;
+		width: 100%;
+		height: 1px;
+		transform: translateY(-50%);
+	}
+
+	.qa-toggle-icon::after {
+		top: 0;
+		left: 50%;
+		width: 1px;
+		height: 100%;
+		transform: translateX(-50%);
+		transition: transform 0.25s ease;
+	}
+
+	.qa-category.is-open > .qa-category__button .qa-toggle-icon::after,
+	.qa-question.is-open > .qa-question__button .qa-toggle-icon::after {
+		transform: translateX(-50%) scaleY(0);
+	}
+
+	/* --- contact us固定ボタン --- */
+	.qa-contact-btn {
+		position: fixed;
+		right: 20px;
+		bottom: 20px;
+		z-index: 40;
+		width: 120px;
+		height: 120px;
+		background: linear-gradient(145deg, #4c3f66, #2c2138);
+		text-decoration: none;
+		font-size: 13px;
+		letter-spacing: 0.05em;
+	}
+
+	@media (min-width: 768px) {
+		.section {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 96px 40px;
+		}
+
+		.qa-heading-section {
+			padding-bottom: 0;
+		}
+
+		.qa-heading__rule {
+			width: calc(100% + max(40px, (100vw - 1200px) / 2 + 40px));
+		}
+
+		.qa-card {
+			padding: 56px 64px;
+		}
+
+		.qa-category__button {
+			font-size: 20px;
+			padding: 28px 0;
+		}
+
+		.qa-question__text,
+		.qa-answer__text {
+			font-size: 16px;
+		}
+
+		.qa-badge {
+			width: 28px;
+			height: 36px;
+			font-size: 13px;
+		}
+
+		.qa-contact-btn {
+			right: 40px;
+			bottom: 40px;
+		}
+	}
+</style>
+
+<script>
+	const faqData = [
+		{
+			category: 'ご注文について',
+			questions: [
+				{
+					q: '注文確認メールが届きません。どうすればよいですか？',
+					a: [
+						'ご注文はスタッフが順次確認しております。ご注文後、1〜3営業日以内にご注文受付完了メールをお送りいたします。',
+						'期間を空けても届かない場合は、迷惑メールフォルダに振り分けられている可能性がございます。お手数ですがフォルダをご確認ください。',
+						'確認できない・届いていない場合は、ご登録のメールアドレスに誤りがある可能性がありますので、「氏名」「住所」「ご注文商品」を記載の上、お問い合わせフォームよりご連絡ください。\n※「info@r-veil.com」からのメールを受信できるよう設定をお願いいたします。\n＜問い合わせフォーム（リンク）＞',
+					],
+				},
+				{
+					q: '複数の注文を1つにまとめられますか？',
+					a: [
+						'同一の名義・住所に限り可能です。\nご注文いただいた商品のうち、最も完成予定日が遅い商品に合わせてまとめて発送いたします。',
+						'発送準備に入った商品は同梱対応ができかねますので、ご希望の方はお早めにご相談ください。\n＜問い合わせフォーム（リンク）＞',
+					],
+				},
+				{
+					q: '注文後にサイズの変更はできますか？',
+					a: [
+						'お客様のご注文後に製造する「受注販売」のため、ご注文確定後のサイズ変更は原則として承っておりません。\nご注文前にカラーやサイズなどの製品仕様を十分ご確認ください。',
+					],
+				},
+				{
+					q: '注文後に届け先の変更はできますか？',
+					a: [
+						'商品は、お支払い時にご入力いただくお届け先住所へ発送いたします。\nお届け先を変更される場合は、お支払い時に最新の住所をご入力ください。',
+						'なお、発送準備開始後のお届け先の変更はお受けできませんので、ご了承ください。',
+					],
+				},
+				{
+					q: '海外在住ですが注文・発送できますか？',
+					a: ['恐れ入りますが、配送は日本国内のみとさせていただいております。'],
+				},
+			],
+		},
+		{
+			category: '製作状況の確認について',
+			questions: [
+				{
+					q: '製作の進捗状況を確認できますか？',
+					a: ['ご注文から約2週間後を目安に、製作状況をご案内いたします。\n以降は製作完了のお知らせメールをお送りする流れとなります。'],
+				},
+			],
+		},
+		{
+			category: '配送・送料　お届け日数について',
+			questions: [
+				{
+					q: '送料はどれくらいですか？',
+					a: ['全国一律で送料無料となります。\n海外配送には対応しておりませんので、ご注意ください。'],
+				},
+				{
+					q: '注文してから届くまでに何日くらいかかりますか？',
+					a: [
+						'ご注文いただいてからお届けまでは、製作期間・入金確認期間・発送準備期間を含めて、2週間前後の期間をいただいております。',
+						'ご入金確認後、発送準備を行い2〜5営業日以内に発送いたします。\n発送からお届けまでの日数は地域により異なりますが、発送日の翌日～3日後が目安となります。\n※地域によっては、さらに数日期間を要する場合がございます。\n※天候や交通状況により遅れる場合がございます。',
+					],
+				},
+			],
+		},
+		{
+			category: '支払い方法について',
+			questions: [
+				{
+					q: 'どのような支払い方法がありますか？',
+					a: [
+						'クレジットカード決済、電子決済サービスがご利用いただけます。\n詳しくは支払い方法についてのページをご参照ください。\n＜支払い方法について（リンク）＞',
+					],
+				},
+				{
+					q: '決済のタイミングはいつですか？',
+					a: [
+						'製作完了後にお送りするメールに記載されている「お支払いページ」の「今すぐ支払う」ボタンを押したタイミングで決済処理が行われます。\n引き落とし日は、ご利用のカード会社や決済サービスの規定により異なります。',
+					],
+				},
+				{
+					q: '支払い期限はいつですか？',
+					a: [
+						'製作完了後、お支払い用ページのリンクをメールでお送りいたします。\nご案内から1週間以内のお支払いをお願いいたします。\n＜支払い方法について（リンク）＞',
+					],
+				},
+				{
+					q: '支払いを期限内にできない場合はどうすればよいですか？',
+					a: [
+						'状況に応じてご相談を承ります。お支払い期限内にお問い合わせください。\n※延長をお約束するものではありません。\n＜お問い合わせフォーム（リンク）＞',
+					],
+				},
+			],
+		},
+		{
+			category: '返品・交換・キャンセルについて',
+			questions: [
+				{
+					q: '注文後にキャンセルはできますか？',
+					a: [
+						'お客様のご注文後に製造する「受注販売」のため、ご注文確定後のキャンセルは一切承っておりません。\nご注文前にカラーやサイズなどの製品仕様を十分ご確認ください。',
+					],
+				},
+				{
+					q: 'イメージと違ったので返品・交換はできますか？',
+					a: ['お客様都合（イメージ違い、サイズ違いなど）による返品・交換は一切お受けしておりません。あらかじめご了承ください。'],
+				},
+				{
+					q: '使用後の返品・交換はできますか？',
+					a: ['恐れ入りますが、一度ご使用になった商品の返品・交換はお受けできません。'],
+				},
+				{
+					q: '不良品が届いた場合はどうすればいいですか？',
+					a: [
+						'大変申し訳ございません。商品到着後7日以内にお問い合わせフォームよりご連絡ください。\n送料当店負担にて交換、または返金させていただきます。\n※交換の場合は再製作のためお時間をいただきます。\n＜問い合わせフォーム（リンク）＞',
+					],
+				},
+				{
+					q: '返金はどのように行われますか？',
+					a: ['返品商品の到着確認後、注文時にご利用いただいた決済方法を通じて返金手続きを行います。\n返金されるまでの日数は、カード会社により異なります。'],
+				},
+			],
+		},
+		{
+			category: '商品について',
+			questions: [
+				{
+					q: '愛犬のサイズはどのように測ればよいですか？',
+					a: ['首周り・胴周り・着丈の3箇所を採寸のうえ、サイズ表と照らし合わせてお選びください。\n＜サイズ表（リンク）＞'],
+				},
+				{
+					q: 'サイズ選びに迷った場合はどうすればいいですか？',
+					a: [
+						'胴周りに少し余裕を持たせたサイズをおすすめしております。\n首周りが大きく余ってしまう場合は、愛犬に合わせて手縫いで詰めてあげてください。',
+						'サイズ選びに迷われた場合は、お問い合わせフォームより愛犬の犬種・体重・首周り・胴周り・着丈をご記入のうえ、お気軽にご相談ください。',
+					],
+				},
+				{
+					q: 'お手入れ方法を教えてください。',
+					a: [
+						'中性洗剤を使用した手洗い（押し洗い）をおすすめしております。洗濯後は陰干ししてください。',
+						'洗濯機を使用する場合は、裏返して洗濯ネットに入れ、ドライコースでのお洗濯を推奨しております。\n柔軟剤・漂白剤の使用はお控えください。',
+					],
+				},
+				{
+					q: '撥水加工の持続期間を教えてください。',
+					a: ['撥水効果の持続期間は使用状況や洗濯方法により異なり、徐々に低下いたします。\n撥水効果が下がってきたと感じた際は、市販の撥水スプレーをご使用ください。'],
+				},
+				{
+					q: 'リフレクターラインは洗濯しても効果は落ちませんか？',
+					a: ['ご使用状況や洗濯方法により、反射性能が低下する場合があります。\n長くご使用いただくため、お手入れ方法をご確認のうえ、お取り扱いください。'],
+				},
+				{
+					q: '生地は愛犬の肌に触れても安全ですか？',
+					a: ['「（使用素材名）」を使用しております。\nアレルギー等が気になる場合は、獣医師にご相談のうえご購入ください。'],
+				},
+				{
+					q: 'バッグは防水ですか？',
+					a: ['防水仕様ではありません。\n撥水加工が施された生地を使用しているため、軽い雨や水滴を弾きやすい仕様です。'],
+				},
+				{
+					q: '完売品の再販予定はありますか？',
+					a: ['全ての商品が数量限定です。売り切れ次第販売終了となり、再販の予定はございません。'],
+				},
+			],
+		},
+	];
+
+	function linkify(text) {
+		const escaped = text
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
+		return escaped.replace(/＜(.+?)（リンク）＞/g, '<a href="#">$1</a>');
+	}
+
+	function renderAnswer(paragraphs) {
+		return paragraphs
+			.map((para) => `<p>${linkify(para).replace(/\n/g, '<br>')}</p>`)
+			.join('');
+	}
+
+	const list = document.getElementById('qa-list');
+
+	faqData.forEach((cat, catIndex) => {
+		const catEl = document.createElement('div');
+		catEl.className = 'qa-category';
+
+		const catButton = document.createElement('button');
+		catButton.type = 'button';
+		catButton.className = 'qa-category__button';
+		catButton.setAttribute('aria-expanded', 'false');
+		catButton.setAttribute('aria-controls', `qa-cat-panel-${catIndex}`);
+		catButton.innerHTML = `<span>${cat.category}</span><span class="qa-toggle-icon" aria-hidden="true"></span>`;
+
+		const catPanel = document.createElement('div');
+		catPanel.className = 'qa-category__panel';
+		catPanel.id = `qa-cat-panel-${catIndex}`;
+
+		const catPanelInner = document.createElement('div');
+		catPanelInner.className = 'qa-category__panel-inner';
+
+		const questionsWrap = document.createElement('div');
+		questionsWrap.className = 'qa-category__questions';
+
+		cat.questions.forEach((item, qIndex) => {
+			const qEl = document.createElement('div');
+			qEl.className = 'qa-question';
+
+			const qButton = document.createElement('button');
+			qButton.type = 'button';
+			qButton.className = 'qa-question__button';
+			qButton.setAttribute('aria-expanded', 'false');
+			qButton.setAttribute('aria-controls', `qa-q-panel-${catIndex}-${qIndex}`);
+			qButton.innerHTML = `<span class="qa-badge qa-badge--q" aria-hidden="true">Q</span><span class="qa-question__text">${item.q}</span><span class="qa-toggle-icon" aria-hidden="true"></span>`;
+
+			const qPanel = document.createElement('div');
+			qPanel.className = 'qa-question__panel';
+			qPanel.id = `qa-q-panel-${catIndex}-${qIndex}`;
+
+			const qPanelInner = document.createElement('div');
+			qPanelInner.className = 'qa-question__panel-inner';
+
+			const answerEl = document.createElement('div');
+			answerEl.className = 'qa-answer';
+			answerEl.innerHTML = `<span class="qa-badge qa-badge--a" aria-hidden="true">A</span><div class="qa-answer__text">${renderAnswer(item.a)}</div>`;
+
+			qPanelInner.appendChild(answerEl);
+			qPanel.appendChild(qPanelInner);
+			qEl.appendChild(qButton);
+			qEl.appendChild(qPanel);
+
+			qButton.addEventListener('click', () => {
+				const willOpen = !qEl.classList.contains('is-open');
+				questionsWrap.querySelectorAll('.qa-question.is-open').forEach((openQ) => {
+					openQ.classList.remove('is-open');
+					openQ.querySelector('.qa-question__button').setAttribute('aria-expanded', 'false');
+				});
+				if (willOpen) {
+					qEl.classList.add('is-open');
+					qButton.setAttribute('aria-expanded', 'true');
+				}
+			});
+
+			questionsWrap.appendChild(qEl);
+		});
+
+		catPanelInner.appendChild(questionsWrap);
+		catPanel.appendChild(catPanelInner);
+		catEl.appendChild(catButton);
+		catEl.appendChild(catPanel);
+
+		catButton.addEventListener('click', () => {
+			const willOpen = !catEl.classList.contains('is-open');
+			list.querySelectorAll('.qa-category.is-open').forEach((openCat) => {
+				openCat.classList.remove('is-open');
+				openCat.querySelector('.qa-category__button').setAttribute('aria-expanded', 'false');
+				openCat.querySelectorAll('.qa-question.is-open').forEach((openQ) => {
+					openQ.classList.remove('is-open');
+					openQ.querySelector('.qa-question__button').setAttribute('aria-expanded', 'false');
+				});
+			});
+			if (willOpen) {
+				catEl.classList.add('is-open');
+				catButton.setAttribute('aria-expanded', 'true');
+			}
+		});
+
+		list.appendChild(catEl);
+	});
+</script>

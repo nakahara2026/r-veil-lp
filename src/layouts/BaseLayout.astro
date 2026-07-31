@@ -2,7 +2,11 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-const { title = 'R VEIL — UNISON', description = '同じ素材、同じ機能、同じ表情。境界線を越える、タクティカル・ドッグウェア。' } = Astro.props;
+const {
+	title = 'R VEIL — UNISON',
+	description = '同じ素材、同じ機能、同じ表情。境界線を越える、タクティカル・ドッグウェア。',
+	showBackToTop = true,
+} = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
@@ -24,7 +28,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 	<body>
 		<Header />
 		<slot />
-		<Footer />
+		<Footer showBackToTop={showBackToTop} />
 	</body>
 </html>
 
