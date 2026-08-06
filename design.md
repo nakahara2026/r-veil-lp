@@ -252,7 +252,9 @@
 
 ## 6. 公開・デプロイ
 
-- `astro.config.mjs`：`site: 'https://nakahara2026.github.io'` / `base: '/r-veil-lp'`
+> **本番移行の予定**：サイト完成に伴い、GitHub Pagesからレンタルサーバー（FTP）への移行を予定している。移行に必要な作業手順・注意点はAGENTS.md 6章にまとめてある（接続情報等の機密情報は含まれないよう配慮している）。
+
+- `astro.config.mjs`：`site: 'https://nakahara2026.github.io'` / `base: '/r-veil-lp'`（レンタルサーバー移行後は本番ドメインのルート公開用に変更する。AGENTS.md 6章参照）
 - 画像・favicon・内部リンクは全て`import.meta.env.BASE_URL`基準の相対パス（`const base = import.meta.env.BASE_URL.replace(/\/$/, '')`）
 - GitHub Actions（`.github/workflows/deploy.yml`）：`main`へのpushで`withastro/action`→`actions/deploy-pages`。リポジトリ側で**Settings → Pages → Source を "GitHub Actions"**にする必要あり
 - `top.png`（デザインカンプ）は`.gitignore`で除外
